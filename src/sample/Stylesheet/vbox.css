@@ -1,0 +1,7 @@
+.background-vbox {
+    -fx-background-color: rgba(69, 69, 69, 0.47);
+}
+
+.anchor-pane-menu {
+    -fx-border-color: rgba(69, 69, 69, 0.35);
+}

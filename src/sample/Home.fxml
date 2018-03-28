@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <left>
+      <VBox prefHeight="620.0" prefWidth="214.0" style="-fx-background-color: #454545;" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="72.0" prefWidth="245.0">
+               <children>
+                  <RadioButton fx:id="rgbRadioButton" mnemonicParsing="false" selected="true" text="RGB" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets right="30.0" />
+                     </HBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="colorSpace" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="yiqRadioButton" mnemonicParsing="false" text="YIQ" textFill="WHITE" toggleGroup="$colorSpace" />
+               </children>
+               <VBox.margin>
+                  <Insets top="2.0" />
+               </VBox.margin>
+            </HBox>
+            <VBox alignment="CENTER">
+               <VBox.margin>
+                  <Insets top="2.0" />
+               </VBox.margin>
+               <children>
+                  <Label text="Exibição de bandas" textFill="WHITE">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></Label>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <CheckBox mnemonicParsing="false" text="R" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets right="6.0" />
+                           </HBox.margin></CheckBox>
+                        <Slider />
+                        <Label text="0" textFill="WHITE" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets top="5.0" />
+                     </BorderPane.margin>
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" text="G" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin></CheckBox>
+                        <Slider />
+                        <Label text="0" textFill="WHITE" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets top="5.0" />
+                     </BorderPane.margin>
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" text="B" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets right="7.0" />
+                           </HBox.margin></CheckBox>
+                        <Slider />
+                        <Label text="0" textFill="WHITE" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets top="5.0" />
+                     </BorderPane.margin>
+                     <VBox.margin>
+                        <Insets bottom="2.0" top="2.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </left>
+   <top>
+      <HBox prefHeight="36.0" prefWidth="1280.0" style="-fx-background-color: #282828;" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="214.0">
+               <children>
+                  <Label alignment="CENTER" text="ImageManipulation" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </VBox>
+            <HBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Open" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Save" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
