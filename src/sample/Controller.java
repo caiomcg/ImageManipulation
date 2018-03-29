@@ -1,13 +1,18 @@
 package sample;
 
+import IM.Process.Colors.Conversor;
 import IM.Utils;
 import com.sun.jndi.toolkit.url.Uri;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -32,12 +37,30 @@ public class Controller implements Initializable {
     @FXML
     private RadioButton rgbRadioButton;
     @FXML
-    private RadioButton yiqRadioButton;
-    @FXML
     private ImageView imageView;
+
+    private ToggleGroup group;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        group = rgbRadioButton.getToggleGroup();
+
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (group.getSelectedToggle() != null) {
+                    Conversor conversor = new Conversor();
+                    if (((RadioButton)group.getSelectedToggle()).getText().equals("YIQ")) {
+                        BufferedImage out = conversor.applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), true);
+                        imageView.setImage(SwingFXUtils.toFXImage(out, null));
+                    } else {
+                        BufferedImage out = conversor.applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), false);
+                        imageView.setImage(SwingFXUtils.toFXImage(out, null));
+                    }
+                }
+            }
+        });
+
         imageView.fitWidthProperty().bind(hBox.widthProperty());
         imageView.fitHeightProperty().bind(hBox.heightProperty());
     }
@@ -73,4 +96,5 @@ public class Controller implements Initializable {
             }
         }
     }
+
 }

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import IM.Process.Process;
 
-public class Conversor extends Process{
+public class Conversor extends Process {
     @Override
     protected int transform(BufferedImage image, int pixelX, int pixelY, Object obj) {
         boolean yiq_status = (boolean) obj;
