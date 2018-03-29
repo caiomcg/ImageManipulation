@@ -1,5 +1,6 @@
 package sample;
 
+import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Conversor;
 import IM.Utils;
 import com.sun.jndi.toolkit.url.Uri;
@@ -41,6 +42,9 @@ public class Controller implements Initializable {
 
     private ToggleGroup group;
 
+    private Image originalImage;
+    private float counter = 0;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         group = rgbRadioButton.getToggleGroup();
@@ -74,27 +78,35 @@ public class Controller implements Initializable {
         if (file != null) {
             this.statusLabel.setText("Opened: " + file.toURI().toString());
             this.imageView.setImage(new Image(file.toURI().toString()));
+            originalImage = imageView.getImage();
         }
     }
 
     @FXML
     public void saveButton(ActionEvent event) {
-        File file = Utils.createFileChooser("Save File").showSaveDialog(rgbRadioButton.getScene().getWindow());
 
-        if(file != null){
-            String extension = Utils.getFileExtension(file.getPath());
-            if (extension.isEmpty()) {
-                file = new File(file.getAbsolutePath() + ".png");
-            }
-            this.statusLabel.setText("Saved: " + file.toURI().toString());
+        // "counter++" to bright image, and "counter--" to darken image
+        counter--;
+        Multiplicative mult = new Multiplicative();
+        BufferedImage out = mult.applyFilter(SwingFXUtils.fromFXImage(originalImage, null), counter);
+        imageView.setImage(SwingFXUtils.toFXImage(out, null));
 
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(this.imageView.snapshot(null, null), null);
-            try {
-                ImageIO.write(bufferedImage, "png", file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        File file = Utils.createFileChooser("Save File").showSaveDialog(rgbRadioButton.getScene().getWindow());
+//
+//        if(file != null){
+//            String extension = Utils.getFileExtension(file.getPath());
+//            if (extension.isEmpty()) {
+//                file = new File(file.getAbsolutePath() + ".png");
+//            }
+//            this.statusLabel.setText("Saved: " + file.toURI().toString());
+//
+//            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(this.imageView.snapshot(null, null), null);
+//            try {
+//                ImageIO.write(bufferedImage, "png", file);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
 
 }

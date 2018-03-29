@@ -108,7 +108,7 @@
                            <font>
                               <Font size="12.0" />
                            </font></Label>
-                        <Slider />
+                        <Slider blockIncrement="0.1" majorTickUnit="0.1" max="7.0" min="-7.0" />
                         <Label prefWidth="30.0" text="0" textFill="WHITE" />
                      </children>
                      <VBox.margin>
@@ -124,7 +124,7 @@
                            <HBox.margin>
                               <Insets right="12.0" />
                            </HBox.margin></Label>
-                        <Slider />
+                        <Slider fx:id="multiSlider" />
                         <Label prefWidth="30.0" text="0" textFill="WHITE">
                            <HBox.margin>
                               <Insets top="5.0" />
