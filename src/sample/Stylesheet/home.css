@@ -1,0 +1,33 @@
+.background-vbox {
+    -fx-background-color: #454545;
+}
+
+.anchor-pane-menu {
+    -fx-border-color: rgba(69, 69, 69, 0.35);
+}
+
+.hbox:hover {
+    -fx-background-color: #242424;
+}
+
+.sidebar-button {
+    -fx-text-fill: white;
+    -fx-background-color: #383838;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #343434;
+}
+
+.sidebar-toggle-button {
+    -fx-text-fill: white;
+    -fx-background-color: #383838;
+}
+
+.sidebar-toggle-button:hover {
+    -fx-background-color: #343434;
+}
+
+.sidebar-toggle-button:selected {
+    -fx-background-color: #272727;
+}

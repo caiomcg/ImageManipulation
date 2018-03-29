@@ -7,15 +7,20 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane stylesheets="@Stylesheet/home.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <left>
-      <VBox prefHeight="684.0" prefWidth="246.0" style="-fx-background-color: #454545;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="684.0" prefWidth="246.0" styleClass="background-vbox" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="72.0">
                <children>
@@ -23,11 +28,11 @@
                      <HBox.margin>
                         <Insets right="30.0" />
                      </HBox.margin>
-                  </RadioButton>
-                  <RadioButton fx:id="yiqRadioButton" mnemonicParsing="false" text="YIQ" textFill="WHITE">
                      <toggleGroup>
                         <ToggleGroup fx:id="colorSpace" />
-                     </toggleGroup></RadioButton>
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="yiqRadioButton" mnemonicParsing="false" text="YIQ" textFill="WHITE" toggleGroup="$colorSpace" />
                </children>
                <VBox.margin>
                   <Insets top="2.0" />
@@ -117,7 +122,7 @@
                               <Font size="12.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="11.0" />
+                              <Insets right="12.0" />
                            </HBox.margin></Label>
                         <Slider />
                         <Label prefWidth="30.0" text="0" textFill="WHITE">
@@ -146,17 +151,130 @@
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin></TextField>
-                        <Button mnemonicParsing="false" text="Média">
+                        <ToggleButton mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Média">
                            <HBox.margin>
                               <Insets right="10.0" />
-                           </HBox.margin></Button>
-                        <Button mnemonicParsing="false" text="Aplicar" />
+                           </HBox.margin></ToggleButton>
+                        <Button mnemonicParsing="false" styleClass="sidebar-button" text="Aplicar" />
                      </children>
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
                </children>
+            </VBox>
+            <VBox alignment="CENTER">
+               <children>
+                  <Label text="Filtros" textFill="WHITE" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label text="Media" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets right="18.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <Slider />
+                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label text="Mediana" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets right="4.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <Slider />
+                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <ToggleButton mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Sobel">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </ToggleButton>
+                        <ToggleButton mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Lapaciano">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </ToggleButton>
+                        <ToggleButton mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Negativo" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <GridPane alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextField alignment="CENTER" maxWidth="-Infinity" />
+                        <TextField maxWidth="-Infinity" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets left="2.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField maxWidth="-Infinity" GridPane.columnIndex="2">
+                           <GridPane.margin>
+                              <Insets left="2.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField maxWidth="-Infinity" GridPane.rowIndex="1" />
+                        <TextField alignment="CENTER" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="2.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField maxWidth="-Infinity" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="2.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField alignment="CENTER" maxWidth="-Infinity" GridPane.rowIndex="2" />
+                        <TextField alignment="CENTER" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="2.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField alignment="CENTER" maxWidth="-Infinity" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="2.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <ToggleButton mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" styleClass="sidebar-toggle-button" text="Custom" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="15.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <Button maxWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar Filtros">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin></Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
             </VBox>
          </children>
       </VBox>
@@ -178,14 +296,14 @@
             </VBox>
             <HBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0" styleClass="hbox">
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Open" textFill="WHITE" HBox.hgrow="ALWAYS" />
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#openButton" style="-fx-background-color: transparent;" text="Open" textFill="WHITE" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0">
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="100.0" styleClass="hbox">
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Save" textFill="WHITE" HBox.hgrow="ALWAYS" />
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveButton" style="-fx-background-color: transparent;" text="Save" textFill="WHITE" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>
@@ -194,6 +312,19 @@
       </HBox>
    </top>
    <bottom>
-      <HBox prefHeight="25.0" prefWidth="1280.0" style="-fx-background-color: #515151;" BorderPane.alignment="CENTER" />
+      <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="1280.0" style="-fx-background-color: #515151;" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="statusLabel" alignment="BASELINE_LEFT" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="4.0" />
+               </HBox.margin></Label>
+         </children></HBox>
    </bottom>
+   <center>
+      <HBox fx:id="hBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imageView" fitHeight="684.0" fitWidth="1034.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </center>
 </BorderPane>
