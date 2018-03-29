@@ -44,26 +44,26 @@ public class Controller implements Initializable {
 
     @FXML
     public void openButton(ActionEvent event) {
-        FileChooser fileChooser = Utils.createFileChooser();
+        FileChooser fileChooser = Utils.createFileChooser("Open File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPEG files (*.jpg)", "*.jpg"));
         File file = fileChooser.showOpenDialog(rgbRadioButton.getScene().getWindow());
 
         if (file != null) {
-            this.statusLabel.setText("Opening: " + file.toURI().toString());
+            this.statusLabel.setText("Opened: " + file.toURI().toString());
             this.imageView.setImage(new Image(file.toURI().toString()));
         }
     }
 
     @FXML
     public void saveButton(ActionEvent event) {
-        File file = Utils.createFileChooser().showSaveDialog(rgbRadioButton.getScene().getWindow());
+        File file = Utils.createFileChooser("Save File").showSaveDialog(rgbRadioButton.getScene().getWindow());
 
         if(file != null){
             String extension = Utils.getFileExtension(file.getPath());
             if (extension.isEmpty()) {
                 file = new File(file.getAbsolutePath() + ".png");
             }
-            this.statusLabel.setText("Saving: " + file.toURI().toString());
+            this.statusLabel.setText("Saved: " + file.toURI().toString());
 
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(this.imageView.snapshot(null, null), null);
             try {

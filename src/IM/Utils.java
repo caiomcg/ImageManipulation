@@ -8,11 +8,11 @@ import java.io.File;
 
 public class Utils {
     @Nullable
-    public static FileChooser createFileChooser() {
+    public static FileChooser createFileChooser(String title) {
         FileChooser fileChooser = new FileChooser();
         //Set extension filter
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
-        //Show save file dialog
+        fileChooser.setTitle(title);
         return fileChooser;
     }
 
