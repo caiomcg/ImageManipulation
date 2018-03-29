@@ -49,7 +49,7 @@
                      </VBox.margin></Label>
                   <HBox alignment="CENTER">
                      <children>
-                        <CheckBox fx:id="rRadioButton" mnemonicParsing="false" text="R" textFill="WHITE">
+                        <CheckBox fx:id="rCheckBox" mnemonicParsing="false" text="R" textFill="WHITE">
                            <HBox.margin>
                               <Insets right="6.0" />
                            </HBox.margin></CheckBox>
@@ -64,7 +64,7 @@
                      </VBox.margin></HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
                      <children>
-                        <CheckBox fx:id="gRadioButton" mnemonicParsing="false" text="G" textFill="WHITE">
+                        <CheckBox fx:id="gCheckBox" mnemonicParsing="false" text="G" textFill="WHITE">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></CheckBox>
@@ -80,7 +80,7 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
                      <children>
-                        <CheckBox fx:id="bRadioButton" mnemonicParsing="false" text="B" textFill="WHITE">
+                        <CheckBox fx:id="bCheckBox" mnemonicParsing="false" text="B" textFill="WHITE">
                            <HBox.margin>
                               <Insets right="7.0" />
                            </HBox.margin></CheckBox>
@@ -94,7 +94,7 @@
                         <Insets bottom="2.0" top="2.0" />
                      </VBox.margin>
                   </HBox>
-                  <Button mnemonicParsing="false" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar">
+                  <Button mnemonicParsing="false" onAction="#applyBandSelection" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>

@@ -10,7 +10,6 @@ public class Conversor extends Process {
         boolean yiq_status = (boolean) obj;
 
         Color color = new Color(image.getRGB(pixelX, pixelY));
-
         int[] rgb = null;
 
         if (yiq_status) {

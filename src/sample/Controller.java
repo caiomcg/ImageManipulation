@@ -1,5 +1,6 @@
 package sample;
 
+import IM.Process.BandSelection.BandSelector;
 import IM.Process.Colors.Conversor;
 import IM.Utils;
 import com.sun.jndi.toolkit.url.Uri;
@@ -28,11 +29,11 @@ import java.util.logging.Logger;
 
 public class Controller implements Initializable {
     @FXML
-    private CheckBox rRadioButton;
+    private CheckBox rCheckBox;
     @FXML
-    private CheckBox gRadioButton;
+    private CheckBox gCheckBox;
     @FXML
-    private CheckBox bRadioButton;
+    private CheckBox bCheckBox;
     @FXML
     private HBox hBox;
     @FXML
@@ -102,6 +103,25 @@ public class Controller implements Initializable {
 
     @FXML
     public void applyBandSelection(ActionEvent event) {
+        this.statusLabel.setText("Applying band selection");
 
+        int channels = 0x00000000;
+        System.err.println(Integer.toBinaryString(channels));
+
+        if (rCheckBox.isSelected()) {
+            channels |= 0xFFFF0000;
+        }
+        if (gCheckBox.isSelected()) {
+            channels |= 0xFF00FF00;
+        }
+        if (bCheckBox.isSelected()) {
+            channels |= 0xFF0000FF;
+        }
+        if (channels == 0x00) {
+            channels = 0xFFFFFFFF;
+        }
+
+        BufferedImage out = new BandSelector().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), channels);
+        imageView.setImage(SwingFXUtils.toFXImage(out, null));
     }
 }
