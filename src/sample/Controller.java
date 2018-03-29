@@ -9,10 +9,8 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -20,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +27,12 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class Controller implements Initializable {
+    @FXML
+    private CheckBox rRadioButton;
+    @FXML
+    private CheckBox gRadioButton;
+    @FXML
+    private CheckBox bRadioButton;
     @FXML
     private HBox hBox;
     @FXML
@@ -97,4 +100,8 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    public void applyBandSelection(ActionEvent event) {
+
+    }
 }
