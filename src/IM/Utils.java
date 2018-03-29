@@ -10,6 +10,7 @@ public class Utils {
     @Nullable
     public static FileChooser createFileChooser(String title) {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         //Set extension filter
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
         fileChooser.setTitle(title);
