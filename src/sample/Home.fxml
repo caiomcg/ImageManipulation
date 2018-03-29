@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@Stylesheet/home.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane stylesheets="@Stylesheet/home.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <left>
       <VBox prefHeight="684.0" prefWidth="246.0" styleClass="background-vbox" BorderPane.alignment="CENTER">
          <children>
@@ -311,6 +312,19 @@
       </HBox>
    </top>
    <bottom>
-      <HBox prefHeight="25.0" prefWidth="1280.0" style="-fx-background-color: #515151;" BorderPane.alignment="CENTER" />
+      <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="1280.0" style="-fx-background-color: #515151;" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="statusLabel" alignment="BASELINE_LEFT" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="4.0" />
+               </HBox.margin></Label>
+         </children></HBox>
    </bottom>
+   <center>
+      <HBox fx:id="hBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imageView" fitHeight="684.0" fitWidth="1034.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </center>
 </BorderPane>
