@@ -53,8 +53,8 @@
                            <HBox.margin>
                               <Insets right="6.0" />
                            </HBox.margin></CheckBox>
-                        <Slider />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                        <Slider fx:id="rSlider" max="255.0" value="255.0" />
+                        <Label fx:id="rLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
                         <Insets top="5.0" />
@@ -68,8 +68,8 @@
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></CheckBox>
-                        <Slider />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                        <Slider fx:id="gSlider" max="255.0" value="255.0" />
+                        <Label fx:id="gLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
                         <Insets top="5.0" />
@@ -84,8 +84,8 @@
                            <HBox.margin>
                               <Insets right="7.0" />
                            </HBox.margin></CheckBox>
-                        <Slider />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                        <Slider fx:id="bSlider" max="255.0" value="255.0" />
+                        <Label fx:id="bLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
                         <Insets top="5.0" />
@@ -113,7 +113,7 @@
                            <font>
                               <Font size="12.0" />
                            </font></Label>
-                        <Slider />
+                        <Slider max="255.0" />
                         <Label prefWidth="30.0" text="0" textFill="WHITE" />
                      </children>
                      <VBox.margin>
@@ -129,7 +129,7 @@
                            <HBox.margin>
                               <Insets right="12.0" />
                            </HBox.margin></Label>
-                        <Slider />
+                        <Slider max="255.0" />
                         <Label prefWidth="30.0" text="0" textFill="WHITE">
                            <HBox.margin>
                               <Insets top="5.0" />

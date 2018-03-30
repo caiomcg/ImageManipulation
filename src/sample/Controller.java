@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.LabelView;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +32,24 @@ public class Controller implements Initializable {
     @FXML
     private CheckBox rCheckBox;
     @FXML
+    private Label rLabel;
+    @FXML
+    private Slider rSlider;
+
+    @FXML
     private CheckBox gCheckBox;
     @FXML
+    private Label gLabel;
+    @FXML
+    private Slider gSlider;
+
+    @FXML
     private CheckBox bCheckBox;
+    @FXML
+    private Label bLabel;
+    @FXML
+    private Slider bSlider;
+
     @FXML
     private HBox hBox;
     @FXML
@@ -49,21 +65,30 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         group = rgbRadioButton.getToggleGroup();
 
-        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if (group.getSelectedToggle() != null) {
-                    Conversor conversor = new Conversor();
-                    if (((RadioButton)group.getSelectedToggle()).getText().equals("YIQ")) {
-                        BufferedImage out = conversor.applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), true);
-                        imageView.setImage(SwingFXUtils.toFXImage(out, null));
-                    } else {
-                        BufferedImage out = conversor.applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), false);
-                        imageView.setImage(SwingFXUtils.toFXImage(out, null));
-                    }
+        group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (group.getSelectedToggle() != null) {
+                Conversor conversor = new Conversor();
+                if (((RadioButton)group.getSelectedToggle()).getText().equals("YIQ")) {
+                    BufferedImage out = conversor.applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), true);
+                    imageView.setImage(SwingFXUtils.toFXImage(out, null));
+                } else {
+                    BufferedImage out = conversor.applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), false);
+                    imageView.setImage(SwingFXUtils.toFXImage(out, null));
                 }
             }
         });
+
+        rSlider.valueProperty().addListener((observable, oldValue, newValue) ->
+            rLabel.textProperty().setValue(String.valueOf((int) rSlider.getValue()))
+        );
+
+        gSlider.valueProperty().addListener((observable, oldValue, newValue) ->
+                gLabel.textProperty().setValue(String.valueOf((int) gSlider.getValue()))
+        );
+
+        bSlider.valueProperty().addListener((observable, oldValue, newValue) ->
+            bLabel.textProperty().setValue(String.valueOf((int) bSlider.getValue()))
+        );
 
         imageView.fitWidthProperty().bind(hBox.widthProperty());
         imageView.fitHeightProperty().bind(hBox.heightProperty());
@@ -106,16 +131,15 @@ public class Controller implements Initializable {
         this.statusLabel.setText("Applying band selection");
 
         int channels = 0x00000000;
-        System.err.println(Integer.toBinaryString(channels));
 
         if (rCheckBox.isSelected()) {
-            channels |= 0xFFFF0000;
+            channels |= 0xFF000000 | Integer.parseInt(rLabel.getText()) << 16;
         }
         if (gCheckBox.isSelected()) {
-            channels |= 0xFF00FF00;
+            channels |= 0xFF000000 | Integer.parseInt(gLabel.getText()) << 8;
         }
         if (bCheckBox.isSelected()) {
-            channels |= 0xFF0000FF;
+            channels |= 0xFF000000 | Integer.parseInt(bLabel.getText());
         }
         if (channels == 0x00) {
             channels = 0xFFFFFFFF;
