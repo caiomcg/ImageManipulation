@@ -48,18 +48,9 @@ public class Conversor extends Process {
         int g = (int)Math.round(y - (0.272 * i) - (0.647 * q));
         int b = (int)Math.round(y - (1.106 * i) + (1.703 * q));
 
-        if (r > 255)
-            r = 255;
-        if (r < 0)
-            r = 0;
-        if (g > 255)
-            g = 255;
-        if (g < 0)
-            g = 0;
-        if (b > 255)
-            b = 255;
-        if (b < 0)
-            b = 0;
+        r = Math.min(Math.max(r, 0), 255);
+        g = Math.min(Math.max(g, 0), 255);
+        b = Math.min(Math.max(b, 0), 255);
 
 
         return new int[]{r, g, b};
