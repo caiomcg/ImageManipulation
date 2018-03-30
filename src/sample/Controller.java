@@ -29,6 +29,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class Controller implements Initializable {
+
+    // Band Selection
+    //--------------------------------------------
     @FXML
     private CheckBox rCheckBox;
     @FXML
@@ -49,7 +52,10 @@ public class Controller implements Initializable {
     private Label bLabel;
     @FXML
     private Slider bSlider;
+    //--------------------------------------------
 
+    // UI
+    //--------------------------------------------
     @FXML
     private HBox hBox;
     @FXML
@@ -58,6 +64,19 @@ public class Controller implements Initializable {
     private RadioButton rgbRadioButton;
     @FXML
     private ImageView imageView;
+    //--------------------------------------------
+
+    // Brightness Selection
+    //--------------------------------------------
+    @FXML
+    private Slider sliderAditiveBrightness;
+    @FXML
+    private Label labelAditiveBrightness;
+    @FXML
+    private Slider sliderMultiplicativeBrightness;
+    @FXML
+    private Label labelMultiplicativeBrightness;
+    //--------------------------------------------
 
     private ToggleGroup group;
 
@@ -88,6 +107,14 @@ public class Controller implements Initializable {
 
         bSlider.valueProperty().addListener((observable, oldValue, newValue) ->
             bLabel.textProperty().setValue(String.valueOf((int) bSlider.getValue()))
+        );
+
+        sliderAditiveBrightness.valueProperty().addListener((observable, oldValue, newValue) ->
+                labelAditiveBrightness.textProperty().setValue(String.valueOf((int) sliderAditiveBrightness.getValue()))
+        );
+
+        sliderMultiplicativeBrightness.valueProperty().addListener((observable, oldValue, newValue) ->
+                labelMultiplicativeBrightness.textProperty().setValue(String.valueOf((int) sliderMultiplicativeBrightness.getValue()))
         );
 
         imageView.fitWidthProperty().bind(hBox.widthProperty());
@@ -147,5 +174,10 @@ public class Controller implements Initializable {
 
         BufferedImage out = new BandSelector().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), channels);
         imageView.setImage(SwingFXUtils.toFXImage(out, null));
+    }
+
+    @FXML
+    public void applyBrightness(ActionEvent event) {
+        //TODO: Execute the brightness algorithm
     }
 }

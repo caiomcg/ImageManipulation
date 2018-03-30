@@ -113,8 +113,8 @@
                            <font>
                               <Font size="12.0" />
                            </font></Label>
-                        <Slider max="255.0" />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                        <Slider fx:id="sliderAditiveBrightness" max="250.0" min="-250.0" />
+                        <Label fx:id="labelAditiveBrightness" prefWidth="30.0" text="0" textFill="WHITE" />
                      </children>
                      <VBox.margin>
                         <Insets left="-5.0" top="5.0" />
@@ -129,8 +129,8 @@
                            <HBox.margin>
                               <Insets right="12.0" />
                            </HBox.margin></Label>
-                        <Slider max="255.0" />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE">
+                        <Slider fx:id="sliderMultiplicativeBrightness" max="250.0" min="-250.0" />
+                        <Label fx:id="labelMultiplicativeBrightness" prefWidth="30.0" text="0" textFill="WHITE">
                            <HBox.margin>
                               <Insets top="5.0" />
                            </HBox.margin></Label>
@@ -139,6 +139,10 @@
                         <Insets left="-5.0" />
                      </VBox.margin>
                   </HBox>
+                  <Button mnemonicParsing="false" onAction="#applyBrightness" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin></Button>
                </children>
                <VBox.margin>
                   <Insets top="15.0" />
