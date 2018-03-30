@@ -129,7 +129,7 @@
                            <HBox.margin>
                               <Insets right="12.0" />
                            </HBox.margin></Label>
-                        <Slider fx:id="sliderMultiplicativeBrightness" max="250.0" min="-250.0" />
+                        <Slider fx:id="sliderMultiplicativeBrightness" max="7.0" min="-7.0" />
                         <Label fx:id="labelMultiplicativeBrightness" prefWidth="30.0" text="0" textFill="WHITE">
                            <HBox.margin>
                               <Insets top="5.0" />

@@ -188,7 +188,21 @@ public class Controller implements Initializable {
 
     @FXML
     public void applyBrightness(ActionEvent event) {
-        //TODO: Execute the brightness algorithm
+        this.statusLabel.setText("Applying Brightness properties selection");
+
+        BufferedImage outImage = SwingFXUtils.fromFXImage(imageView.getImage(), null);
+        int additiveValue = Integer.parseInt(labelAditiveBrightness.getText());
+        int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
+
+        try {
+            if (additiveValue != 0)
+                outImage = new Additive().applyFilter(outImage, additiveValue);
+            if (multiplicativeValue != 0)
+                outImage = new Multiplicative().applyFilter(outImage, multiplicativeValue);
+            imageView.setImage(SwingFXUtils.toFXImage(outImage, null));
+        } catch (NullPointerException e) {
+            this.presentBadImageAlert();
+        }
     }
 
     private void presentBadImageAlert() {
