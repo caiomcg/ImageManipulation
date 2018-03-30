@@ -1,5 +1,6 @@
 package IM.Process.SpatialFilters;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.lang.Math;
 
@@ -21,15 +22,22 @@ public class MeanFilter implements FilterAlgorithm {
                     continue;
                 }
 
+                int rgbSum = 0;
                 for (int row = i - (maskSize/2); row <= i + (maskSize/2); row++) {
                     for (int column = j - (maskSize/2); column <= j + (maskSize/2); column++) {
-                        int rgbSum  = filterResult.getRGB(i, j) + filter.getBufferedImage().getRGB(row, column);
+                        rgbSum  = filterResult.getRGB(i, j) + filter.getBufferedImage().getRGB(row, column);
                         filterResult.setRGB(i, j, rgbSum);
                     }
                 }
 
-                float rgbMean = filterResult.getRGB(i, j) / (maskSize * maskSize);
-                filterResult.setRGB(i, j, Math.round(rgbMean));
+                Color color = new Color(rgbSum);
+
+                int maskPow = maskSize * maskSize;
+                int redMean = color.getRed() / maskPow;
+                int greenMean = color.getGreen() / maskPow;
+                int blueMean = color.getBlue() / maskPow;
+
+                filterResult.setRGB(i, j, new Color(redMean, greenMean, blueMean).getRGB());
 
              }
         }

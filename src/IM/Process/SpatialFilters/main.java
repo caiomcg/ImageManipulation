@@ -32,16 +32,9 @@ public class main {
         BFI.setRGB(3, 2, new Color(7,7,7).getRGB());
         BFI.setRGB(3, 3, new Color(4,4,4).getRGB());
 
-        //  CORRECT OUTPUT FOR MEDIAN
-        //  java.awt.Color[r=2,g=2,b=2]   java.awt.Color[r=1,g=1,b=1]   java.awt.Color[r=6,g=6,b=6]   java.awt.Color[r=5,g=5,b=5]
-        //  java.awt.Color[r=1,g=1,b=1]   java.awt.Color[r=5,g=5,b=5]   java.awt.Color[r=6,g=6,b=6]   java.awt.Color[r=9,g=9,b=9]
-        //  java.awt.Color[r=5,g=5,b=5]   java.awt.Color[r=5,g=5,b=5]   java.awt.Color[r=7,g=7,b=7]   java.awt.Color[r=6,g=6,b=6]
-        //  java.awt.Color[r=3,g=3,b=3]   java.awt.Color[r=2,g=2,b=2]   java.awt.Color[r=7,g=7,b=7]   java.awt.Color[r=4,g=4,b=4]
-        //  Filter F = new Filter(Filter.MEDIAN, 3, BFI, new int[1][1]);
-        //  BufferedImage bufferedImage = F.applyFilter();
-
-        // CORRECT OUTPUT FO MEAN
+//        Filter F = new Filter(Filter.MEDIAN, 3, BFI, new int[1][1]);
         Filter F = new Filter(Filter.MEAN, 3, BFI, new int[1][1]);
+
         BufferedImage bufferedImage = F.applyFilter();
 
         for (int i = 0 ; i < 4; i++){
