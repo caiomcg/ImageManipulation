@@ -43,7 +43,7 @@ public class Controller implements Initializable {
     private ToggleGroup group;
 
     private Image originalImage;
-    private float counter = 0;
+    private int counter = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
