@@ -86,14 +86,13 @@ public class Controller implements Initializable {
 
         group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (group.getSelectedToggle() != null) {
-                Conversor conversor = new Conversor();
-                if (((RadioButton)group.getSelectedToggle()).getText().equals("YIQ")) {
-                    BufferedImage out = conversor.applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), true);
+                try {
+                    BufferedImage out = new Conversor().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), ((RadioButton)group.getSelectedToggle()).getText().equals("YIQ"));
                     imageView.setImage(SwingFXUtils.toFXImage(out, null));
-                } else {
-                    BufferedImage out = conversor.applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), false);
-                    imageView.setImage(SwingFXUtils.toFXImage(out, null));
+                } catch (NullPointerException e) {
+                    this.presentBadImageAlert();
                 }
+
             }
         });
 
@@ -171,13 +170,25 @@ public class Controller implements Initializable {
         if (channels == 0x00) {
             channels = 0xFFFFFFFF;
         }
+        try {
+            BufferedImage out = new BandSelector().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), channels);
+            imageView.setImage(SwingFXUtils.toFXImage(out, null));
+        } catch (NullPointerException e) {
+            this.presentBadImageAlert();
+        }
 
-        BufferedImage out = new BandSelector().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), channels);
-        imageView.setImage(SwingFXUtils.toFXImage(out, null));
     }
 
     @FXML
     public void applyBrightness(ActionEvent event) {
         //TODO: Execute the brightness algorithm
+    }
+
+    private void presentBadImageAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ImageManipulation");
+        alert.setHeaderText("Um erro ocorreu :(");
+        alert.setContentText("Nenhuma imagem encontrada,\npor favor abra uma imagem\nutilizando o menu acima.");
+        alert.showAndWait();
     }
 }
