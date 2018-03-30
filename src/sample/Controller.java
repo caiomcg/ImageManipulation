@@ -238,7 +238,8 @@ public class Controller implements Initializable {
                 outImage = new Multiplicative().applyFilter(outImage, multiplicativeValue);
             imageView.setImage(SwingFXUtils.toFXImage(outImage, null));
         } catch (NullPointerException e) {
-            this.presentBadImageAlert();
+            this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+                    " favor abra uma imagem\nutilizando o menu acima.");
         }
     }
 
