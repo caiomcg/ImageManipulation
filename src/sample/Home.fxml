@@ -49,12 +49,12 @@
                      </VBox.margin></Label>
                   <HBox alignment="CENTER">
                      <children>
-                        <CheckBox mnemonicParsing="false" text="R" textFill="WHITE">
+                        <CheckBox fx:id="rCheckBox" mnemonicParsing="false" text="R" textFill="WHITE">
                            <HBox.margin>
                               <Insets right="6.0" />
                            </HBox.margin></CheckBox>
-                        <Slider />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                        <Slider fx:id="rSlider" max="255.0" value="255.0" />
+                        <Label fx:id="rLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
                         <Insets top="5.0" />
@@ -64,12 +64,12 @@
                      </VBox.margin></HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" text="G" textFill="WHITE">
+                        <CheckBox fx:id="gCheckBox" mnemonicParsing="false" text="G" textFill="WHITE">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></CheckBox>
-                        <Slider />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                        <Slider fx:id="gSlider" max="255.0" value="255.0" />
+                        <Label fx:id="gLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
                         <Insets top="5.0" />
@@ -80,12 +80,12 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" text="B" textFill="WHITE">
+                        <CheckBox fx:id="bCheckBox" mnemonicParsing="false" text="B" textFill="WHITE">
                            <HBox.margin>
                               <Insets right="7.0" />
                            </HBox.margin></CheckBox>
-                        <Slider />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                        <Slider fx:id="bSlider" max="255.0" value="255.0" />
+                        <Label fx:id="bLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
                         <Insets top="5.0" />
@@ -94,6 +94,11 @@
                         <Insets bottom="2.0" top="2.0" />
                      </VBox.margin>
                   </HBox>
+                  <Button mnemonicParsing="false" onAction="#applyBandSelection" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
             <VBox alignment="CENTER">
@@ -108,8 +113,8 @@
                            <font>
                               <Font size="12.0" />
                            </font></Label>
-                        <Slider blockIncrement="0.1" majorTickUnit="0.1" max="7.0" min="-7.0" />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE" />
+                        <Slider fx:id="sliderAditiveBrightness" max="250.0" min="-250.0" />
+                        <Label fx:id="labelAditiveBrightness" prefWidth="30.0" text="0" textFill="WHITE" />
                      </children>
                      <VBox.margin>
                         <Insets left="-5.0" top="5.0" />
@@ -124,8 +129,8 @@
                            <HBox.margin>
                               <Insets right="12.0" />
                            </HBox.margin></Label>
-                        <Slider fx:id="multiSlider" />
-                        <Label prefWidth="30.0" text="0" textFill="WHITE">
+                        <Slider fx:id="sliderMultiplicativeBrightness" max="250.0" min="-250.0" />
+                        <Label fx:id="labelMultiplicativeBrightness" prefWidth="30.0" text="0" textFill="WHITE">
                            <HBox.margin>
                               <Insets top="5.0" />
                            </HBox.margin></Label>
@@ -134,6 +139,10 @@
                         <Insets left="-5.0" />
                      </VBox.margin>
                   </HBox>
+                  <Button mnemonicParsing="false" onAction="#applyBrightness" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin></Button>
                </children>
                <VBox.margin>
                   <Insets top="15.0" />
