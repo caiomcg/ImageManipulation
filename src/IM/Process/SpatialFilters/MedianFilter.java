@@ -9,26 +9,25 @@ public class MedianFilter implements FilterAlgorithm {
     public BufferedImage applyFilter(Filter filter) {
         int imgWidth = filter.getBufferedImage().getWidth();
         int imgHeight = filter.getBufferedImage().getHeight();
+        int maskSize = filter.getFilterSize();
 
         BufferedImage filterResult = new BufferedImage(imgWidth, imgHeight, filter.getBufferedImage().getType());
 
         // Support to calculate the median
-        int[] buffer = new int[filter.getFilterDimensionM() * filter.getFilterDimensionN()];
-        int maskSize = buffer.length / 2;
+        int[] buffer = new int[maskSize * maskSize];
 
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
 
-
                 // Ignore edges
-                if (i <= maskSize || i >= imgWidth - maskSize || j <= maskSize || j >= imgHeight - maskSize) {
+                if (i == 0 || i == imgWidth  - 1 || j == 0 || j == imgHeight - 1) {
                     filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
                     continue;
                 }
 
                 int it = 0;
-                for(int row = i - maskSize; row <= i + maskSize; row++){
-                    for(int column = j - maskSize; column <= j + maskSize; column++){
+                for(int row = i - (maskSize/2); row <= i + (maskSize/2); row++){
+                    for(int column = j - (maskSize/2); column <= j + (maskSize/2); column++){
                         buffer[it] = filter.getBufferedImage().getRGB(row, column);
                         it++;
                     }

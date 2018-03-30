@@ -8,16 +8,14 @@ public class Filter {
     public static final int MEDIAN = 2;
     public static final int CUSTOM = 3;
 
-    protected int filterM;
-    protected int filterN;
+    protected int filterSize;
     protected int[][] kernel;
 
     protected FilterAlgorithm filter;
     protected BufferedImage image;
 
-    public Filter(int filterType, int filterM, int filterN, BufferedImage image, int[][] kernel) {
-        this.filterM = filterM;
-        this.filterN = filterN;
+    public Filter(int filterType, int filterSize, BufferedImage image, int[][] kernel) {
+        this.filterSize = filterSize;
         this.image = image;
         this.kernel = kernel;
 
@@ -38,12 +36,8 @@ public class Filter {
         return filter.applyFilter(this);
     }
 
-    public int getFilterDimensionM() {
-        return filterM;
-    }
-
-    public int getFilterDimensionN() {
-        return filterN;
+    public int getFilterSize() {
+        return filterSize;
     }
 
     public BufferedImage getBufferedImage() {

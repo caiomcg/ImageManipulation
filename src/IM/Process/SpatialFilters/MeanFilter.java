@@ -9,6 +9,7 @@ public class MeanFilter implements FilterAlgorithm {
     public BufferedImage applyFilter(Filter filter) {
         int imgWidth = filter.getBufferedImage().getWidth();
         int imgHeight = filter.getBufferedImage().getHeight();
+        int maskSize = filter.getFilterSize();
 
         BufferedImage filterResult = new BufferedImage(imgWidth, imgHeight, filter.getBufferedImage().getType());
 
@@ -20,14 +21,14 @@ public class MeanFilter implements FilterAlgorithm {
                     continue;
                 }
 
-                for (int row = 0; row < filter.getFilterDimensionM(); row++) {
-                    for (int column = 0; column < filter.getFilterDimensionN(); column++) {
+                for (int row = i - (maskSize/2); row <= i + (maskSize/2); row++) {
+                    for (int column = j - (maskSize/2); column <= j + (maskSize/2); column++) {
                         int rgbSum  = filterResult.getRGB(i, j) + filter.getBufferedImage().getRGB(row, column);
                         filterResult.setRGB(i, j, rgbSum);
                     }
                 }
 
-                float rgbMean = filterResult.getRGB(i, j) / (filter.getFilterDimensionM() * filter.getFilterDimensionN());
+                float rgbMean = filterResult.getRGB(i, j) / (maskSize * maskSize);
                 filterResult.setRGB(i, j, Math.round(rgbMean));
 
              }
