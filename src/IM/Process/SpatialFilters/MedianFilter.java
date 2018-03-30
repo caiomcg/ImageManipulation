@@ -13,22 +13,22 @@ public class MedianFilter implements FilterAlgorithm {
         BufferedImage filterResult = new BufferedImage(imgWidth, imgHeight, filter.getBufferedImage().getType());
 
         // Support to calculate the median
-        int buffer[];
+        int[] buffer = new int[filter.getFilterDimensionM() * filter.getFilterDimensionN()];
+        int maskSize = buffer.length / 2;
 
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
 
-                buffer = new int[filter.getFilterDimensionM() * filter.getFilterDimensionN()];
 
                 // Ignore edges
-                if (i == 0 || i == imgWidth  - 1 || j == 0 || j == imgHeight - 1) {
+                if (i <= maskSize || i >= imgWidth - maskSize || j <= maskSize || j >= imgHeight - maskSize) {
                     filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
                     continue;
                 }
 
                 int it = 0;
-                for (int row = 0; row < filter.getFilterDimensionM(); row++) {
-                    for (int column = 0; column < filter.getFilterDimensionN(); column++) {
+                for(int row = i - maskSize; row <= i + maskSize; row++){
+                    for(int column = j - maskSize; column <= j + maskSize; column++){
                         buffer[it] = filter.getBufferedImage().getRGB(row, column);
                         it++;
                     }
