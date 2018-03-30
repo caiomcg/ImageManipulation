@@ -37,7 +37,7 @@ public class Multiplicative extends Process {
         if (bb > 255)
             bb = 255;
 
-        return new int[]{Math.round(br), Math.round(bg), Math.round(bb)};
+        return new int[]{br, bg, bb};
     }
 
     public int[] divideBrightness(Color colors, int constant) {
