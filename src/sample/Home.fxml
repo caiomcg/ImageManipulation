@@ -18,9 +18,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane stylesheets="@Stylesheet/home.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane onKeyReleased="#keyReleased" stylesheets="@Stylesheet/home.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <left>
-      <VBox prefHeight="684.0" prefWidth="246.0" styleClass="background-vbox" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="684.0" prefWidth="246.0" styleClass="background-vbox" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="72.0">
                <children>
@@ -278,7 +278,7 @@
                   </GridPane>
                   <Button maxWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar Filtros">
                      <VBox.margin>
-                        <Insets top="15.0" />
+                        <Insets top="5.0" />
                      </VBox.margin></Button>
                </children>
                <VBox.margin>
