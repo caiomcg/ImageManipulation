@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class Process {
 
-    public static BufferedImage temp = null;
+    public BufferedImage temp = null;
 
     public BufferedImage applyFilter(BufferedImage image, Object obj){
         if (temp == null){
