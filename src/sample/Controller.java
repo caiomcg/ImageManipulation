@@ -1,5 +1,6 @@
 package sample;
 
+import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Conversor;
 import IM.Utils;
@@ -86,10 +87,11 @@ public class Controller implements Initializable {
     public void saveButton(ActionEvent event) {
 
         // "counter++" to bright image, and "counter--" to darken image
-        counter--;
-        Multiplicative mult = new Multiplicative();
+        counter = counter + 10;
+        Additive mult = new Additive();
         BufferedImage out = mult.applyFilter(SwingFXUtils.fromFXImage(originalImage, null), counter);
         imageView.setImage(SwingFXUtils.toFXImage(out, null));
+        System.out.println("counter: " + counter);
 
 //        File file = Utils.createFileChooser("Save File").showSaveDialog(rgbRadioButton.getScene().getWindow());
 //
