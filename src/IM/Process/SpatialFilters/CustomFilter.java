@@ -30,7 +30,7 @@ public class CustomFilter implements FilterAlgorithm {
 
                 for(int row = i - maskSize; row <= i + maskSize; row++){
                     for(int column = j - maskSize; column <= j + maskSize; column++){
-                        buffer += kernel[row][column] * filter.getBufferedImage().getRGB(row, column);
+                        buffer += kernel[row % kernel.length][column % kernel.length] * filter.getBufferedImage().getRGB(row, column);
                     }
                 }
 
@@ -40,5 +40,5 @@ public class CustomFilter implements FilterAlgorithm {
         }
 
         return filterResult;
-}
+ }
 }
