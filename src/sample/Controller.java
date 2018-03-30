@@ -7,6 +7,7 @@ import IM.Process.Colors.Conversor;
 import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
 
+import IM.Process.Colors.Threshold;
 import IM.Utils;
 import com.sun.istack.internal.Nullable;
 import com.sun.jndi.toolkit.url.Uri;
@@ -232,13 +233,22 @@ public class Controller implements Initializable {
         int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
 
         try {
-            if (additiveValue != 0)
-                outImage = new Additive().applyFilter(outImage, additiveValue);
-            if (multiplicativeValue != 0)
-                outImage = new Multiplicative().applyFilter(outImage, multiplicativeValue);
+//            if (additiveValue != 0)
+//                outImage = new Additive().applyFilter(outImage, additiveValue);
+//            if (multiplicativeValue != 0)
+//                outImage = new Multiplicative().applyFilter(outImage, multiplicativeValue);
+            if(!((RadioButton)rgbRadioButton.getToggleGroup().getSelectedToggle()).getText().equals("YIQ")){
+                this.presentBadImageAlert("Um erro ocorreu :(", "Por favor selecione YIQ");
+                return;
+            }
+            int meanY = new Threshold().getYMean(outImage);
+            System.out.println("Y Mean: " + meanY);
+            outImage = new Threshold().applyFilter(outImage, meanY);
+            //outImage = new Threshold().applyFilter(outImage, additiveValue);
             imageView.setImage(SwingFXUtils.toFXImage(outImage, null));
         } catch (NullPointerException e) {
-            this.presentBadImageAlert();
+            this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+                    " favor abra uma imagem\nutilizando o menu acima.");
         }
     }
 
