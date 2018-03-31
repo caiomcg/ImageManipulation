@@ -6,16 +6,12 @@ import IM.Process.BandSelection.BandSelector;
 import IM.Process.Colors.Conversor;
 import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
-
 import IM.Process.Colors.Threshold;
+import IM.Process.Effects.Negative;
 import IM.Utils;
 import com.sun.istack.internal.Nullable;
-import com.sun.jndi.toolkit.url.Uri;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -27,19 +23,14 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
-import javax.swing.text.LabelView;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.security.KeyException;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 public class Controller implements Initializable {
 
@@ -91,11 +82,34 @@ public class Controller implements Initializable {
     private Label labelMultiplicativeBrightness;
     //--------------------------------------------
 
+    // Threshold
+    //--------------------------------------------
+    @FXML
+    private ToggleButton averageThresholdToggleButton;
+    @FXML
+    private Label customThresholdLabel;
+    @FXML
+    private Slider customThresholdSlider;
+    //--------------------------------------------
+
+    // Filters
+    //--------------------------------------------
+    @FXML
+    private ToggleButton sobelFiterToggleButton;
+    @FXML
+    private ToggleButton laplaceFiterToggleButton;
+    @FXML
+    private ToggleButton negativeFiterToggleButton;
+    @FXML
+    private ToggleButton customFiterToggleButton;
+    //--------------------------------------------
+
     // Memento
     //--------------------------------------------
     private final CareTaker careTaker = new CareTaker();
     private final Originator originator = new Originator();
     //--------------------------------------------
+
     private ToggleGroup group;
 
     private final KeyCombination keyCombinationCtrlO = new KeyCodeCombination(
@@ -114,10 +128,9 @@ public class Controller implements Initializable {
         group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (group.getSelectedToggle() != null) {
                 try {
-                    BufferedImage out = new Conversor().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), ((RadioButton)group.getSelectedToggle()).getText().equals("YIQ"));
-                    this.originator.setBufferedImage(SwingFXUtils.fromFXImage(imageView.getImage(), null));;
-                    this.careTaker.addMemento(this.originator.save());
-                    imageView.setImage(SwingFXUtils.toFXImage(out, null));
+                    BufferedImage out = new Conversor().applyFilter(this.getImage(), ((RadioButton)group.getSelectedToggle()).getText().equals("YIQ"));
+                    this.addToMemento(this.getImage());
+                    this.setImage(out);
                 } catch (NullPointerException e) {
                     this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                             " favor abra uma imagem\nutilizando o menu acima.");
@@ -144,6 +157,10 @@ public class Controller implements Initializable {
 
         sliderMultiplicativeBrightness.valueProperty().addListener((observable, oldValue, newValue) ->
                 labelMultiplicativeBrightness.textProperty().setValue(String.valueOf((int) sliderMultiplicativeBrightness.getValue()))
+        );
+
+        customThresholdSlider.valueProperty().addListener((observable, oldValue, newValue) ->
+                customThresholdLabel.textProperty().setValue(String.valueOf((int) customThresholdSlider.getValue()))
         );
 
         imageView.fitWidthProperty().bind(hBox.widthProperty());
@@ -201,10 +218,9 @@ public class Controller implements Initializable {
             channels = 0xFFFFFFFF;
         }
         try {
-            BufferedImage out = new BandSelector().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), channels);
-            this.originator.setBufferedImage(SwingFXUtils.fromFXImage(imageView.getImage(), null));
-            this.careTaker.addMemento(this.originator.save());
-            imageView.setImage(SwingFXUtils.toFXImage(out, null));
+            BufferedImage out = new BandSelector().applyFilter(this.getImage(), channels);
+            this.addToMemento(this.getImage());
+            this.setImage(out);
         } catch (NullPointerException e) {
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
@@ -226,37 +242,85 @@ public class Controller implements Initializable {
 
     @FXML
     public void applyBrightness(ActionEvent event) {
-        this.statusLabel.setText("Applying Brightness properties selection");
+        this.statusLabel.setText("Aplicando brilho!");
 
-        BufferedImage outImage = SwingFXUtils.fromFXImage(imageView.getImage(), null);
+        BufferedImage originalImage = this.getImage();
+        BufferedImage modifiedImage = null;
+
         int additiveValue = Integer.parseInt(labelAditiveBrightness.getText());
         int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
 
         try {
-//            if (additiveValue != 0)
-//                outImage = new Additive().applyFilter(outImage, additiveValue);
-//            if (multiplicativeValue != 0)
-//                outImage = new Multiplicative().applyFilter(outImage, multiplicativeValue);
-            if(!((RadioButton)rgbRadioButton.getToggleGroup().getSelectedToggle()).getText().equals("YIQ")){
-                this.presentBadImageAlert("Um erro ocorreu :(", "Por favor selecione YIQ");
-                return;
+            if (additiveValue != 0)
+                modifiedImage = new Additive().applyFilter(originalImage, additiveValue);
+            if (multiplicativeValue != 0)
+                modifiedImage = new Multiplicative().applyFilter(modifiedImage, multiplicativeValue);
+            if (modifiedImage != null) {
+                this.statusLabel.setText("Aplicando brilho!");
+                this.addToMemento(originalImage);
+                this.setImage(modifiedImage);
+            } else {
+                this.statusLabel.setText("Falha ao aplicar brilho!");
             }
-            int meanY = new Threshold().getYMean(outImage);
-            System.out.println("Y Mean: " + meanY);
-            outImage = new Threshold().applyFilter(outImage, meanY);
-            //outImage = new Threshold().applyFilter(outImage, additiveValue);
-            imageView.setImage(SwingFXUtils.toFXImage(outImage, null));
         } catch (NullPointerException e) {
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
         }
     }
 
-    public void undo() {
+    @FXML
+    private void onApplyThreshold(ActionEvent event) {
+        if (!((RadioButton)rgbRadioButton.getToggleGroup().getSelectedToggle()).getText().equals("YIQ")){
+            this.presentBadImageAlert("Um erro ocorreu :(", "Por favor selecione YIQ");
+        } else {
+            try {
+                BufferedImage originalImage = this.getImage();
+                int meanY = Integer.parseInt(this.customThresholdLabel.getText());
 
+                if (averageThresholdToggleButton.isSelected()) {
+                    meanY = new Threshold().getYMean(originalImage);
+                }
+                BufferedImage newImage = new Threshold().applyFilter(originalImage, meanY);
+                this.addToMemento(originalImage);
+                this.setImage(newImage);
+            } catch (NullPointerException e) {
+                this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+                        " favor abra uma imagem\nutilizando o menu acima.");
+            }
+        }
+    }
+
+    @FXML
+    private void onApplyFilters(ActionEvent event) {
+        BufferedImage originalImage = this.getImage();
+        BufferedImage newImage = null;
+
+        if (sobelFiterToggleButton.isSelected()) {
+            //TODO: Sobel filter
+            this.statusLabel.setText("Aplicando o filtro de Sobel");
+        }
+        if (laplaceFiterToggleButton.isSelected()) {
+            //TODO: Laplace filter
+            this.statusLabel.setText("Aplicando o filtro Laplaciano");
+        }
+        if (negativeFiterToggleButton.isSelected()) {
+            this.statusLabel.setText("Aplicando negativo");
+            newImage = new Negative().applyFilter(originalImage, ((RadioButton)group.getSelectedToggle())
+                    .getText().equals("YIQ") ? 0x00 : 0xFF);
+        }
+
+        if (newImage != null) {
+            this.addToMemento(originalImage);
+            this.setImage(newImage);
+        } else {
+            this.statusLabel.setText("Os filtros não puderam ser aplicados");
+        }
+    }
+
+    private void undo() {
         this.originator.restore(this.careTaker.getMemento());
         try {
-            this.imageView.setImage(SwingFXUtils.toFXImage(this.originator.getCurrentImage(), null));
+            this.setImage(this.originator.getCurrentImage());
             this.statusLabel.setText("Undoing");
         } catch (NullPointerException e) {}
     }
@@ -267,5 +331,24 @@ public class Controller implements Initializable {
         alert.setHeaderText(title);
         alert.setContentText(text);
         alert.showAndWait();
+    }
+
+    private void setImage(BufferedImage image) {
+        this.imageView.setImage(SwingFXUtils.toFXImage(image, null));
+    }
+
+    @Nullable
+    private BufferedImage getImage() {
+        try {
+            return SwingFXUtils.fromFXImage(this.imageView.getImage(), null);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+
+    private void addToMemento(BufferedImage image) {
+        this.originator.setBufferedImage(image);
+        this.careTaker.addMemento(this.originator.save());
     }
 }
