@@ -7,6 +7,7 @@ public class Filter {
     public static final int MEAN = 1;
     public static final int MEDIAN = 2;
     public static final int CUSTOM = 3;
+    public static final int SOBEL = 4;
 
     protected int filterSize;
     protected int[][] kernel;
@@ -28,6 +29,9 @@ public class Filter {
                 break;
             case CUSTOM:
                 filter = new CustomFilter();
+                break;
+            case SOBEL:
+                filter = new Sobel();
                 break;
         }
     }
