@@ -342,13 +342,16 @@ public class Controller implements Initializable {
 
         if (sobelFiterToggleButton.isSelected()) {
             //TODO: Sobel filter
-            //appliedFilters += 0x01 << 2;
+            appliedFilters += 0x01 << 2;
             this.statusLabel.setText("Aplicando o filtro de Sobel");
+            originalImage = new Filter(Filter.SOBEL, medianFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
         }
         if (laplaceFiterToggleButton.isSelected()) {
             //TODO: Laplace filter
-            //appliedFilters += 0x01 << 3;
+            appliedFilters += 0x01 << 3;
             this.statusLabel.setText("Aplicando o filtro Laplaciano");
+            int[][] laplaceMatrix = {{-1, -1, -1}, {-1, 8, -1}, {-1, -1, -1}};
+            originalImage = new Filter(Filter.CUSTOM, meanFilterComboBox.getValue(), originalImage, laplaceMatrix).applyFilter();
         }
 
         if (negativeFiterToggleButton.isSelected()) {
