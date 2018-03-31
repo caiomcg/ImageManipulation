@@ -24,7 +24,7 @@ public class MedianFilter implements FilterAlgorithm {
                     for(int column = j - (maskSize/2); column <= j + (maskSize/2); column++) {
 
                         // Ignore edges
-                        if(row < 0 || row >= imgHeight || column < 0 || column >= imgWidth) {
+                        if(row < 0 || row >= imgWidth || column < 0 || column >= imgHeight ) {
                             filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
                             continue;
                         }

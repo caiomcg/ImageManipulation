@@ -17,8 +17,8 @@ public class MeanFilter implements FilterAlgorithm {
         int pixelRGB;
         int redSum, greenSum, blueSum;
 
-        for (int i = 0; i < imgHeight ; i++) {
-            for (int j = 0; j < imgWidth; j++) {
+        for (int i = 0; i <  imgWidth; i++) {
+            for (int j = 0; j < imgHeight ; j++) {
 
                 redSum = 0;
                 greenSum = 0;
@@ -29,11 +29,10 @@ public class MeanFilter implements FilterAlgorithm {
                     for (int column = j - (maskSize/2); column <= j + (maskSize/2); column++) {
 
                         // Ignore edges
-                        if(row < 0 || row >= imgHeight || column < 0 || column >= imgWidth) {
+                        if(row < 0 || row >= imgWidth || column < 0 || column >= imgHeight) {
                             filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
                             continue;
                         }
-
                         pixelRGB = filter.getBufferedImage().getRGB(row, column);
 
                         redSum += (pixelRGB >> 16) & 0xFF;
