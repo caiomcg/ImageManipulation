@@ -1,5 +1,7 @@
 package sample;
 
+
+
 import IM.Memento.CareTaker;
 import IM.Memento.Originator;
 import IM.Process.BandSelection.BandSelector;
@@ -8,8 +10,12 @@ import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Threshold;
 import IM.Process.Effects.Negative;
+import IM.Process.SpatialFilters.Filter;
+import IM.Process.SpatialFilters.MeanFilter;
 import IM.Utils;
 import com.sun.istack.internal.Nullable;
+import com.sun.javafx.collections.ObservableListWrapper;
+import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 
 public class Controller implements Initializable {
 
@@ -102,6 +109,10 @@ public class Controller implements Initializable {
     private ToggleButton negativeFiterToggleButton;
     @FXML
     private ToggleButton customFiterToggleButton;
+    @FXML
+    private ComboBox<Integer> meanFilterComboBox;
+    @FXML
+    private ComboBox<Integer> medianFilterComboBox;
     //--------------------------------------------
 
     // Memento
@@ -162,6 +173,13 @@ public class Controller implements Initializable {
         customThresholdSlider.valueProperty().addListener((observable, oldValue, newValue) ->
                 customThresholdLabel.textProperty().setValue(String.valueOf((int) customThresholdSlider.getValue()))
         );
+
+        meanFilterComboBox.getItems().addAll(0,3,5,7,9);
+        meanFilterComboBox.getSelectionModel().select(0);
+
+        medianFilterComboBox.getItems().addAll(0,3,5,7,9);
+        medianFilterComboBox.getSelectionModel().select(0);
+
 
         imageView.fitWidthProperty().bind(hBox.widthProperty());
         imageView.fitHeightProperty().bind(hBox.heightProperty());
@@ -292,29 +310,57 @@ public class Controller implements Initializable {
 
     @FXML
     private void onApplyFilters(ActionEvent event) {
+        byte appliedFilters = 0x00;
         BufferedImage originalImage = this.getImage();
-        BufferedImage newImage = null;
+
+        if (originalImage != null) {
+            this.addToMemento(originalImage);
+        } else {
+            this.statusLabel.setText("Os filtros não puderam ser aplicados");
+        }
+
+        if (!meanFilterComboBox.getValue().equals(0)) {
+            appliedFilters = 0x01;
+            originalImage = new Filter(Filter.MEAN, meanFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
+        }
+
+        if (!medianFilterComboBox.getValue().equals(0)) {
+            appliedFilters = 0x01 << 1;
+            originalImage = new Filter(Filter.MEDIAN, meanFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
+        }
 
         if (sobelFiterToggleButton.isSelected()) {
             //TODO: Sobel filter
+            //appliedFilters = 0x01 << 2;
             this.statusLabel.setText("Aplicando o filtro de Sobel");
         }
         if (laplaceFiterToggleButton.isSelected()) {
             //TODO: Laplace filter
+            //appliedFilters = 0x01 << 3;
             this.statusLabel.setText("Aplicando o filtro Laplaciano");
         }
+
         if (negativeFiterToggleButton.isSelected()) {
+            appliedFilters = 0x01 << 4;
             this.statusLabel.setText("Aplicando negativo");
-            newImage = new Negative().applyFilter(originalImage, ((RadioButton)group.getSelectedToggle())
+            originalImage = new Negative().applyFilter(originalImage, ((RadioButton)group.getSelectedToggle())
                     .getText().equals("YIQ") ? 0x00 : 0xFF);
         }
 
-        if (newImage != null) {
-            this.addToMemento(originalImage);
-            this.setImage(newImage);
-        } else {
-            this.statusLabel.setText("Os filtros não puderam ser aplicados");
+        if (customFiterToggleButton.isSelected()) {
+            //TODO: Apply custom filter
+            //appliedFilters = 0x01 << 5;
+            this.statusLabel.setText("Aplicando filtro customizado");
         }
+
+        if (appliedFilters == 0x00) {
+            this.statusLabel.setText("Os filtros não puderam ser aplicados");
+            this.originator.restore(this.careTaker.getMemento());
+        } else {
+            this.setImage(originalImage);
+            System.err.println("Applied filters: " + Integer.toBinaryString(appliedFilters));
+        }
+
     }
 
     private void undo() {
