@@ -320,6 +320,7 @@ public class Controller implements Initializable {
     private void onApplyFilters(ActionEvent event) {
         byte appliedFilters = 0x00;
         BufferedImage originalImage = this.getImage();
+        this.statusLabel.setText("Aplicando filtros!");
 
         if (originalImage != null) {
             this.addToMemento(originalImage);
@@ -329,11 +330,13 @@ public class Controller implements Initializable {
 
         if (!meanFilterComboBox.getValue().equals(0)) {
             appliedFilters = 0x01;
+            this.statusLabel.setText("Aplicando o filtro de Média");
             originalImage = new Filter(Filter.MEAN, meanFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
         }
 
         if (!medianFilterComboBox.getValue().equals(0)) {
             appliedFilters += 0x01 << 1;
+            this.statusLabel.setText("Aplicando o filtro de Mediana");
             originalImage = new Filter(Filter.MEDIAN, medianFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
         }
 
@@ -358,8 +361,8 @@ public class Controller implements Initializable {
         if (customFiterToggleButton.isSelected()) {
             //TODO: Apply custom filter
             appliedFilters += 0x01 << 5;
-            originalImage = new Filter(Filter.CUSTOM, meanFilterComboBox.getValue(), originalImage, this.getKernelMatrix()).applyFilter();
             this.statusLabel.setText("Aplicando filtro customizado");
+            originalImage = new Filter(Filter.CUSTOM, meanFilterComboBox.getValue(), originalImage, this.getKernelMatrix()).applyFilter();
         }
 
         if (appliedFilters == 0x00) {
@@ -367,7 +370,6 @@ public class Controller implements Initializable {
             this.originator.restore(this.careTaker.getMemento());
         } else {
             this.setImage(originalImage);
-            System.err.println("Applied filters: " + Integer.toBinaryString(appliedFilters));
         }
 
     }
