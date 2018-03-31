@@ -8,11 +8,12 @@ public class Filter {
     public static final int MEDIAN = 2;
     public static final int CUSTOM = 3;
     public static final int SOBEL = 4;
+    public static final int LAPLACE = 5;
 
-    protected int filterSize;
-    protected int[][] kernel;
+    private int filterSize;
+    private int[][] kernel;
 
-    protected FilterAlgorithm filter;
+    private FilterAlgorithm filter;
     protected BufferedImage image;
 
     public Filter(int filterType, int filterSize, BufferedImage image, int[][] kernel) {
@@ -32,6 +33,10 @@ public class Filter {
                 break;
             case SOBEL:
                 filter = new SobelFilter();
+                break;
+            case LAPLACE:
+                this.kernel = new int[][]{{-1, -1, -1}, {-1, 8, -1}, {-1, -1, -1}};
+                filter = new CustomFilter();
                 break;
         }
     }
