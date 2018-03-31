@@ -208,17 +208,17 @@
                   </HBox>
                   <HBox alignment="CENTER">
                      <children>
-                        <ToggleButton mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Sobel">
+                        <ToggleButton fx:id="sobelFiterToggleButton" mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Sobel">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>
                         </ToggleButton>
-                        <ToggleButton mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Lapaciano">
+                        <ToggleButton fx:id="laplaceFiterToggleButton" mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Lapaciano">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>
                         </ToggleButton>
-                        <ToggleButton mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Negativo" />
+                        <ToggleButton fx:id="negativeFiterToggleButton" mnemonicParsing="false" styleClass="sidebar-toggle-button" text="Negativo" />
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -270,13 +270,13 @@
                               <Insets left="2.0" />
                            </GridPane.margin>
                         </TextField>
-                        <ToggleButton mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" styleClass="sidebar-toggle-button" text="Custom" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ToggleButton fx:id="customFiterToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" styleClass="sidebar-toggle-button" text="Custom" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" top="15.0" />
                      </VBox.margin>
                   </GridPane>
-                  <Button maxWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar Filtros">
+                  <Button maxWidth="-Infinity" mnemonicParsing="false" onAction="#onApplyFilters" prefWidth="150.0" styleClass="sidebar-button" text="Aplicar Filtros">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin></Button>

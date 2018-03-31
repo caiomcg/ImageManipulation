@@ -3,10 +3,12 @@ package sample;
 import IM.Memento.CareTaker;
 import IM.Memento.Originator;
 import IM.Process.BandSelection.BandSelector;
+import IM.Process.Colors.ColorSpace;
 import IM.Process.Colors.Conversor;
 import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
 
+import IM.Process.Effects.Negative;
 import IM.Utils;
 import com.sun.istack.internal.Nullable;
 import com.sun.jndi.toolkit.url.Uri;
@@ -88,6 +90,18 @@ public class Controller implements Initializable {
     private Slider sliderMultiplicativeBrightness;
     @FXML
     private Label labelMultiplicativeBrightness;
+    //--------------------------------------------
+
+    // Filters
+    //--------------------------------------------
+    @FXML
+    private ToggleButton sobelFiterToggleButton;
+    @FXML
+    private ToggleButton laplaceFiterToggleButton;
+    @FXML
+    private ToggleButton negativeFiterToggleButton;
+    @FXML
+    private ToggleButton customFiterToggleButton;
     //--------------------------------------------
 
     // Memento
@@ -224,7 +238,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void applyBrightness(ActionEvent event) {
-        this.statusLabel.setText("Applying Brightness properties selection");
+        this.statusLabel.setText("Aplicando brilho!");
 
         BufferedImage originalImage = this.getImage();
         BufferedImage modifiedImage = null;
@@ -238,8 +252,11 @@ public class Controller implements Initializable {
             if (multiplicativeValue != 0)
                 modifiedImage = new Multiplicative().applyFilter(modifiedImage, multiplicativeValue);
             if (modifiedImage != null) {
+                this.statusLabel.setText("Aplicando brilho!");
                 this.addToMemento(originalImage);
                 this.setImage(modifiedImage);
+            } else {
+                this.statusLabel.setText("Falha ao aplicar brilho!");
             }
         } catch (NullPointerException e) {
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
@@ -247,7 +264,31 @@ public class Controller implements Initializable {
         }
     }
 
-    public void undo() {
+    @FXML
+    private void onApplyFilters(ActionEvent event) {
+        BufferedImage originalImage = this.getImage();
+        BufferedImage newImage = null;
+
+        if (sobelFiterToggleButton.isSelected()) {
+            //TODO: Sobel filter
+        }
+        if (laplaceFiterToggleButton.isSelected()) {
+            //TODO: Laplace filter
+        }
+        if (negativeFiterToggleButton.isSelected()) {
+            newImage = new Negative(((RadioButton)group.getSelectedToggle()).getText().equals("YIQ") ? ColorSpace.YIQ :
+                ColorSpace.RGB).applyFilter(originalImage, null);
+        }
+
+        if (newImage != null) {
+            this.addToMemento(originalImage);
+            this.setImage(newImage);
+        } else {
+            this.statusLabel.setText("Os filtros não puderam ser aplicados");
+        }
+    }
+
+    private void undo() {
         this.originator.restore(this.careTaker.getMemento());
         try {
             this.setImage(this.originator.getCurrentImage());
@@ -267,9 +308,15 @@ public class Controller implements Initializable {
         this.imageView.setImage(SwingFXUtils.toFXImage(image, null));
     }
 
+    @Nullable
     private BufferedImage getImage() {
-        return SwingFXUtils.fromFXImage(this.imageView.getImage(), null);
+        try {
+            return SwingFXUtils.fromFXImage(this.imageView.getImage(), null);
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
+
 
     private void addToMemento(BufferedImage image) {
         this.originator.setBufferedImage(image);
