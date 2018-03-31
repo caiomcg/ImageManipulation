@@ -31,7 +31,7 @@ public class Filter {
                 filter = new CustomFilter();
                 break;
             case SOBEL:
-                filter = new Sobel();
+                filter = new SobelFilter();
                 break;
         }
     }

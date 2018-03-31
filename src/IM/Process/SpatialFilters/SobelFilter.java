@@ -3,7 +3,7 @@ package IM.Process.SpatialFilters;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Sobel implements FilterAlgorithm {
+public class SobelFilter implements FilterAlgorithm {
     @Override
     public BufferedImage applyFilter(Filter filter) {
 
