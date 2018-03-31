@@ -95,6 +95,7 @@ public class Controller implements Initializable {
     private final CareTaker careTaker = new CareTaker();
     private final Originator originator = new Originator();
     //--------------------------------------------
+
     private ToggleGroup group;
 
     private final KeyCombination keyCombinationCtrlO = new KeyCodeCombination(
@@ -113,10 +114,9 @@ public class Controller implements Initializable {
         group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (group.getSelectedToggle() != null) {
                 try {
-                    BufferedImage out = new Conversor().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), ((RadioButton)group.getSelectedToggle()).getText().equals("YIQ"));
-                    this.originator.setBufferedImage(SwingFXUtils.fromFXImage(imageView.getImage(), null));;
-                    this.careTaker.addMemento(this.originator.save());
-                    imageView.setImage(SwingFXUtils.toFXImage(out, null));
+                    BufferedImage out = new Conversor().applyFilter(this.getImage(), ((RadioButton)group.getSelectedToggle()).getText().equals("YIQ"));
+                    this.addToMemento(this.getImage());
+                    this.setImage(out);
                 } catch (NullPointerException e) {
                     this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                             " favor abra uma imagem\nutilizando o menu acima.");
@@ -200,10 +200,9 @@ public class Controller implements Initializable {
             channels = 0xFFFFFFFF;
         }
         try {
-            BufferedImage out = new BandSelector().applyFilter(SwingFXUtils.fromFXImage(imageView.getImage(), null), channels);
-            this.originator.setBufferedImage(SwingFXUtils.fromFXImage(imageView.getImage(), null));
-            this.careTaker.addMemento(this.originator.save());
-            imageView.setImage(SwingFXUtils.toFXImage(out, null));
+            BufferedImage out = new BandSelector().applyFilter(this.getImage(), channels);
+            this.addToMemento(this.getImage());
+            this.setImage(out);
         } catch (NullPointerException e) {
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
@@ -227,16 +226,21 @@ public class Controller implements Initializable {
     public void applyBrightness(ActionEvent event) {
         this.statusLabel.setText("Applying Brightness properties selection");
 
-        BufferedImage outImage = SwingFXUtils.fromFXImage(imageView.getImage(), null);
+        BufferedImage originalImage = this.getImage();
+        BufferedImage modifiedImage = null;
+
         int additiveValue = Integer.parseInt(labelAditiveBrightness.getText());
         int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
 
         try {
             if (additiveValue != 0)
-                outImage = new Additive().applyFilter(outImage, additiveValue);
+                modifiedImage = new Additive().applyFilter(originalImage, additiveValue);
             if (multiplicativeValue != 0)
-                outImage = new Multiplicative().applyFilter(outImage, multiplicativeValue);
-            imageView.setImage(SwingFXUtils.toFXImage(outImage, null));
+                modifiedImage = new Multiplicative().applyFilter(modifiedImage, multiplicativeValue);
+            if (modifiedImage != null) {
+                this.addToMemento(originalImage);
+                this.setImage(modifiedImage);
+            }
         } catch (NullPointerException e) {
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
@@ -244,10 +248,9 @@ public class Controller implements Initializable {
     }
 
     public void undo() {
-
         this.originator.restore(this.careTaker.getMemento());
         try {
-            this.imageView.setImage(SwingFXUtils.toFXImage(this.originator.getCurrentImage(), null));
+            this.setImage(this.originator.getCurrentImage());
             this.statusLabel.setText("Undoing");
         } catch (NullPointerException e) {}
     }
@@ -258,5 +261,18 @@ public class Controller implements Initializable {
         alert.setHeaderText(title);
         alert.setContentText(text);
         alert.showAndWait();
+    }
+
+    private void setImage(BufferedImage image) {
+        this.imageView.setImage(SwingFXUtils.toFXImage(image, null));
+    }
+
+    private BufferedImage getImage() {
+        return SwingFXUtils.fromFXImage(this.imageView.getImage(), null);
+    }
+
+    private void addToMemento(BufferedImage image) {
+        this.originator.setBufferedImage(image);
+        this.careTaker.addMemento(this.originator.save());
     }
 }
