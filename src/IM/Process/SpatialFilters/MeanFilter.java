@@ -17,7 +17,7 @@ public class MeanFilter implements FilterAlgorithm {
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
                 // Ignore edges
-                if (i == 0 || i == imgWidth  - 1 || j == 0 || j == imgHeight - 1) {
+                if (i <= maskSize || i >= imgWidth - maskSize || j <= maskSize || j >= imgHeight - maskSize) {
                     filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
                     continue;
                 }
