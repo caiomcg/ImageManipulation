@@ -3,7 +3,6 @@ package sample;
 import IM.Memento.CareTaker;
 import IM.Memento.Originator;
 import IM.Process.BandSelection.BandSelector;
-import IM.Process.Colors.ColorSpace;
 import IM.Process.Colors.Conversor;
 import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
@@ -11,12 +10,8 @@ import IM.Process.Brightness.Multiplicative;
 import IM.Process.Effects.Negative;
 import IM.Utils;
 import com.sun.istack.internal.Nullable;
-import com.sun.jndi.toolkit.url.Uri;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -28,19 +23,14 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
-import javax.swing.text.LabelView;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.security.KeyException;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 public class Controller implements Initializable {
 
@@ -271,13 +261,16 @@ public class Controller implements Initializable {
 
         if (sobelFiterToggleButton.isSelected()) {
             //TODO: Sobel filter
+            this.statusLabel.setText("Aplicando o filtro de Sobel");
         }
         if (laplaceFiterToggleButton.isSelected()) {
             //TODO: Laplace filter
+            this.statusLabel.setText("Aplicando o filtro Laplaciano");
         }
         if (negativeFiterToggleButton.isSelected()) {
-            newImage = new Negative(((RadioButton)group.getSelectedToggle()).getText().equals("YIQ") ? ColorSpace.YIQ :
-                ColorSpace.RGB).applyFilter(originalImage, null);
+            this.statusLabel.setText("Aplicando negativo");
+            newImage = new Negative().applyFilter(originalImage, ((RadioButton)group.getSelectedToggle())
+                    .getText().equals("YIQ") ? 0x00 : 0xFF);
         }
 
         if (newImage != null) {
