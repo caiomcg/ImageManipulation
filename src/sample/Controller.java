@@ -334,7 +334,7 @@ public class Controller implements Initializable {
 
         if (!medianFilterComboBox.getValue().equals(0)) {
             appliedFilters += 0x01 << 1;
-            originalImage = new Filter(Filter.MEDIAN, meanFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
+            originalImage = new Filter(Filter.MEDIAN, medianFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
         }
 
         if (sobelFiterToggleButton.isSelected()) {

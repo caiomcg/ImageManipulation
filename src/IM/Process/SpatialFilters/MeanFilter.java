@@ -2,7 +2,6 @@ package IM.Process.SpatialFilters;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.lang.Math;
 
 public class MeanFilter implements FilterAlgorithm {
 
@@ -14,30 +13,37 @@ public class MeanFilter implements FilterAlgorithm {
 
         BufferedImage filterResult = new BufferedImage(imgWidth, imgHeight, filter.getBufferedImage().getType());
 
-        for (int i = 0; i < imgWidth; i++) {
-            for (int j = 0; j < imgHeight; j++) {
-                // Ignore edges
-                if (i <= maskSize || i >= imgWidth - maskSize || j <= maskSize || j >= imgHeight - maskSize) {
-                    filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
-                    continue;
-                }
+        // Support to calculate the mean of each channel of pixel
+        int pixelRGB;
+        int redSum, greenSum, blueSum;
 
-                int rgbSum = 0;
+        for (int i = 0; i < imgHeight ; i++) {
+            for (int j = 0; j < imgWidth; j++) {
+
+                redSum = 0;
+                greenSum = 0;
+                blueSum = 0;
+
+                int it = 0;
                 for (int row = i - (maskSize/2); row <= i + (maskSize/2); row++) {
                     for (int column = j - (maskSize/2); column <= j + (maskSize/2); column++) {
-                        rgbSum  = filterResult.getRGB(i, j) + filter.getBufferedImage().getRGB(row, column);
-                        filterResult.setRGB(i, j, rgbSum);
+
+                        // Ignore edges
+                        if(row < 0 || row >= imgHeight || column < 0 || column >= imgWidth) {
+                            filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
+                            continue;
+                        }
+
+                        pixelRGB = filter.getBufferedImage().getRGB(row, column);
+
+                        redSum += (pixelRGB >> 16) & 0xFF;
+                        greenSum += (pixelRGB >> 8) & 0xFF;
+                        blueSum += pixelRGB & 0xFF;
+                        it++;
                     }
                 }
 
-                Color color = new Color(rgbSum);
-
-                int maskPow = maskSize * maskSize;
-                int redMean = color.getRed() / maskPow;
-                int greenMean = color.getGreen() / maskPow;
-                int blueMean = color.getBlue() / maskPow;
-
-                filterResult.setRGB(i, j, new Color(redMean, greenMean, blueMean).getRGB());
+                filterResult.setRGB(i, j, new Color(redSum/it, greenSum/it, blueSum/it).getRGB());
 
              }
         }

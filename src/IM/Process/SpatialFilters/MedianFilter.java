@@ -19,15 +19,16 @@ public class MedianFilter implements FilterAlgorithm {
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
 
-                // Ignore edges
-                if (i <= maskSize || i >= imgWidth - maskSize || j <= maskSize || j >= imgHeight - maskSize) {
-                    filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
-                    continue;
-                }
-
                 int it = 0;
-                for(int row = i - (maskSize/2); row <= i + (maskSize/2); row++){
-                    for(int column = j - (maskSize/2); column <= j + (maskSize/2); column++){
+                for(int row = i - (maskSize/2); row <= i + (maskSize/2); row++) {
+                    for(int column = j - (maskSize/2); column <= j + (maskSize/2); column++) {
+
+                        // Ignore edges
+                        if(row < 0 || row >= imgHeight || column < 0 || column >= imgWidth) {
+                            filterResult.setRGB(i, j, filter.getBufferedImage().getRGB(i, j));
+                            continue;
+                        }
+
                         buffer[it] = filter.getBufferedImage().getRGB(row, column);
                         it++;
                     }
