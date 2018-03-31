@@ -10,7 +10,8 @@ public class CustomFilter implements FilterAlgorithm {
         int imgHeight = filter.getBufferedImage().getHeight();
         int[][] kernel = filter.getKernel();
 
-        int maskSize = kernel.length / 2;
+        // Custom filter only allows 3x3 kernel
+        int maskSize = 1;
 
         BufferedImage filterResult = new BufferedImage(imgWidth, imgHeight, filter.getBufferedImage().getType());
 
