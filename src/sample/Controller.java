@@ -20,6 +20,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -28,10 +29,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import javafx.util.converter.NumberStringConverter;
 
 import javax.imageio.ImageIO;
+import javax.xml.soap.Text;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -113,6 +117,9 @@ public class Controller implements Initializable {
     private ComboBox<Integer> meanFilterComboBox;
     @FXML
     private ComboBox<Integer> medianFilterComboBox;
+    @FXML
+    private GridPane gridPane;
+
     //--------------------------------------------
 
     // Memento
@@ -180,6 +187,7 @@ public class Controller implements Initializable {
         medianFilterComboBox.getItems().addAll(0,3,5,7,9);
         medianFilterComboBox.getSelectionModel().select(0);
 
+        this.setGridMask();
 
         imageView.fitWidthProperty().bind(hBox.widthProperty());
         imageView.fitHeightProperty().bind(hBox.heightProperty());
@@ -325,23 +333,23 @@ public class Controller implements Initializable {
         }
 
         if (!medianFilterComboBox.getValue().equals(0)) {
-            appliedFilters = 0x01 << 1;
+            appliedFilters += 0x01 << 1;
             originalImage = new Filter(Filter.MEDIAN, meanFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
         }
 
         if (sobelFiterToggleButton.isSelected()) {
             //TODO: Sobel filter
-            //appliedFilters = 0x01 << 2;
+            //appliedFilters += 0x01 << 2;
             this.statusLabel.setText("Aplicando o filtro de Sobel");
         }
         if (laplaceFiterToggleButton.isSelected()) {
             //TODO: Laplace filter
-            //appliedFilters = 0x01 << 3;
+            //appliedFilters += 0x01 << 3;
             this.statusLabel.setText("Aplicando o filtro Laplaciano");
         }
 
         if (negativeFiterToggleButton.isSelected()) {
-            appliedFilters = 0x01 << 4;
+            appliedFilters += 0x01 << 4;
             this.statusLabel.setText("Aplicando negativo");
             originalImage = new Negative().applyFilter(originalImage, ((RadioButton)group.getSelectedToggle())
                     .getText().equals("YIQ") ? 0x00 : 0xFF);
@@ -349,7 +357,8 @@ public class Controller implements Initializable {
 
         if (customFiterToggleButton.isSelected()) {
             //TODO: Apply custom filter
-            //appliedFilters = 0x01 << 5;
+            appliedFilters += 0x01 << 5;
+            originalImage = new Filter(Filter.CUSTOM, meanFilterComboBox.getValue(), originalImage, this.getKernelMatrix()).applyFilter();
             this.statusLabel.setText("Aplicando filtro customizado");
         }
 
@@ -369,6 +378,37 @@ public class Controller implements Initializable {
             this.setImage(this.originator.getCurrentImage());
             this.statusLabel.setText("Undoing");
         } catch (NullPointerException e) {}
+    }
+
+    private void setGridMask() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                TextField textField = getNodeFromGridPane(i, j);
+                textField.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+                textField.setText("0");
+            }
+        }
+    }
+
+    private int[][] getKernelMatrix() {
+        int[][] arr = new int[3][3];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                TextField textField = getNodeFromGridPane(i, j);
+                try {
+                    arr[i][j] = Integer.parseInt(textField.getText());
+                } catch (NumberFormatException e) {
+                    textField.setText("0");
+                    arr[i][j] = 0;
+                }
+            }
+        }
+        return arr;
+    }
+
+    private TextField getNodeFromGridPane(int col, int row) {
+        return (TextField) (gridPane.getChildren().get(col*3+row));
     }
 
     private void presentBadImageAlert(String title, String text) {
