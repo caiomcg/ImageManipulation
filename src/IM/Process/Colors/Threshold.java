@@ -32,7 +32,6 @@ public class Threshold extends Process {
 
         for (int y = 0; y < image.getHeight(); y++){
             for (int x = 0; x < image.getWidth(); x++){
-                Color color = new Color(image.getRGB(x, y));
                 sumYValues += (image.getRGB(x,y) >> 16) & 0xFF;
             }
         }
