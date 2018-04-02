@@ -10,13 +10,13 @@ public class Threshold extends Process {
     @Override
     protected int transform(BufferedImage image, int pixelX, int pixelY, Object obj) {
         int constant = (int) obj;
-        int new_y = 0;
 
-        Color colors = new Color(image.getRGB(pixelX, pixelY));
+        int pixel = image.getRGB(pixelX, pixelY);
+
         if (constant > 0)
-            new_y = this.yThreshold(colors.getRed(), constant);
+            pixel = (pixel & ~(0xFF << 16) | (this.yThreshold((pixel >> 16) & 0xFF, constant) << 16));
 
-        return new Color(new_y, colors.getGreen(), colors.getBlue()).getRGB();
+        return pixel;
     }
 
     private int yThreshold(int yBand, int constant) {
@@ -33,7 +33,7 @@ public class Threshold extends Process {
         for (int y = 0; y < image.getHeight(); y++){
             for (int x = 0; x < image.getWidth(); x++){
                 Color color = new Color(image.getRGB(x, y));
-                sumYValues += color.getRed();
+                sumYValues += (image.getRGB(x,y) >> 16) & 0xFF;
             }
         }
 
