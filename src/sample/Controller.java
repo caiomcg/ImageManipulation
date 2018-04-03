@@ -271,24 +271,26 @@ public class Controller implements Initializable {
         this.statusLabel.setText("Aplicando brilho!");
 
         BufferedImage originalImage = this.getImage();
-        BufferedImage modifiedImage = null;
+
+        this.addToMemento(originalImage);
 
         int additiveValue = Integer.parseInt(labelAditiveBrightness.getText());
         int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
 
         try {
             if (additiveValue != 0)
-                modifiedImage = new Additive().applyFilter(originalImage, additiveValue);
+                originalImage = new Additive().applyFilter(originalImage, additiveValue);
             if (multiplicativeValue != 0)
-                modifiedImage = new Multiplicative().applyFilter(modifiedImage, multiplicativeValue);
-            if (modifiedImage != null) {
+                originalImage = new Multiplicative().applyFilter(originalImage, multiplicativeValue);
+            if (originalImage != null) {
                 this.statusLabel.setText("Aplicando brilho!");
-                this.addToMemento(originalImage);
-                this.setImage(modifiedImage);
+                this.setImage(originalImage);
             } else {
                 this.statusLabel.setText("Falha ao aplicar brilho!");
+                this.undo();
             }
         } catch (NullPointerException e) {
+            this.undo();
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
         }
