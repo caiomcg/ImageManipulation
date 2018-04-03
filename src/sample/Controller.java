@@ -277,7 +277,7 @@ public class Controller implements Initializable {
             this.addToMemento(originalImage);
 
             int additiveValue = (int)sliderAditiveBrightness.getValue();
-            double multiplicativeValue = sliderMultiplicativeBrightness.getValue();
+            double multiplicativeValue = Double.parseDouble(labelMultiplicativeBrightness.getText());
 
             if (additiveValue != 0)
                 originalImage = new Additive().applyFilter(originalImage, additiveValue);

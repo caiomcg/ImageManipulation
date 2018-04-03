@@ -128,10 +128,10 @@
                               <Font size="12.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="20.0" right="5.0" />
+                              <Insets left="19.0" right="5.0" />
                            </HBox.margin></Label>
-                        <Slider fx:id="sliderMultiplicativeBrightness" blockIncrement="0.1" max="50.0" />
-                        <Label fx:id="labelMultiplicativeBrightness" prefWidth="50.0" text="0" textFill="WHITE">
+                        <Slider fx:id="sliderMultiplicativeBrightness" blockIncrement="0.01" max="50.0" prefWidth="140.0" />
+                        <Label fx:id="labelMultiplicativeBrightness" prefWidth="50.0" text="0.0" textFill="WHITE">
                            <HBox.margin>
                               <Insets top="5.0" />
                            </HBox.margin></Label>
