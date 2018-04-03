@@ -350,8 +350,7 @@ public class Controller implements Initializable {
             //TODO: Laplace filter
             appliedFilters += 0x01 << 3;
             this.statusLabel.setText("Aplicando o filtro Laplaciano");
-            int[][] laplaceMatrix = {{-1, -1, -1}, {-1, 8, -1}, {-1, -1, -1}};
-            originalImage = new Filter(Filter.CUSTOM, meanFilterComboBox.getValue(), originalImage, laplaceMatrix).applyFilter();
+            originalImage = new Filter(Filter.LAPLACE, meanFilterComboBox.getValue(), originalImage, null).applyFilter();
         }
 
         if (negativeFiterToggleButton.isSelected()) {
