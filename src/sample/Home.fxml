@@ -54,7 +54,7 @@
                            <HBox.margin>
                               <Insets right="6.0" />
                            </HBox.margin></CheckBox>
-                        <Slider fx:id="rSlider" max="255.0" value="255.0" />
+                        <Slider fx:id="rSlider" blockIncrement="1.0" max="255.0" value="255.0" />
                         <Label fx:id="rLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
@@ -69,7 +69,7 @@
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></CheckBox>
-                        <Slider fx:id="gSlider" max="255.0" value="255.0" />
+                        <Slider fx:id="gSlider" blockIncrement="1.0" max="255.0" value="255.0" />
                         <Label fx:id="gLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
@@ -85,7 +85,7 @@
                            <HBox.margin>
                               <Insets right="7.0" />
                            </HBox.margin></CheckBox>
-                        <Slider fx:id="bSlider" max="255.0" value="255.0" />
+                        <Slider fx:id="bSlider" blockIncrement="1.0" max="255.0" value="255.0" />
                         <Label fx:id="bLabel" prefWidth="30.0" text="255" textFill="WHITE" />
                      </children>
                      <BorderPane.margin>
@@ -114,7 +114,7 @@
                            <font>
                               <Font size="12.0" />
                            </font></Label>
-                        <Slider fx:id="sliderAditiveBrightness" max="250.0" min="-250.0" />
+                        <Slider fx:id="sliderAditiveBrightness" blockIncrement="1.0" max="250.0" min="-250.0" />
                         <Label fx:id="labelAditiveBrightness" prefWidth="30.0" text="0" textFill="WHITE" />
                      </children>
                      <VBox.margin>
@@ -123,15 +123,15 @@
                   </HBox>
                   <HBox alignment="CENTER">
                      <children>
-                        <Label text="Multi." textFill="WHITE">
+                        <Label prefWidth="43.0" text="Multi." textFill="WHITE">
                            <font>
                               <Font size="12.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="12.0" />
+                              <Insets left="20.0" right="5.0" />
                            </HBox.margin></Label>
-                        <Slider fx:id="sliderMultiplicativeBrightness" max="7.0" min="-7.0" />
-                        <Label fx:id="labelMultiplicativeBrightness" prefWidth="30.0" text="0" textFill="WHITE">
+                        <Slider fx:id="sliderMultiplicativeBrightness" blockIncrement="0.1" max="50.0" />
+                        <Label fx:id="labelMultiplicativeBrightness" prefWidth="50.0" text="0" textFill="WHITE">
                            <HBox.margin>
                               <Insets top="5.0" />
                            </HBox.margin></Label>
@@ -157,7 +157,7 @@
                   <Label text="Limiarização" textFill="WHITE" />
                   <HBox alignment="CENTER">
                      <children>
-                        <Slider fx:id="customThresholdSlider" max="255.0" min="1.0" value="1.0">
+                        <Slider fx:id="customThresholdSlider" blockIncrement="1.0" max="255.0" min="1.0" value="1.0">
                            <HBox.margin>
                               <Insets left="30.0" />
                            </HBox.margin>

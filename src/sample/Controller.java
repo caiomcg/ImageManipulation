@@ -174,7 +174,8 @@ public class Controller implements Initializable {
         );
 
         sliderMultiplicativeBrightness.valueProperty().addListener((observable, oldValue, newValue) ->
-                labelMultiplicativeBrightness.textProperty().setValue(String.valueOf((int) sliderMultiplicativeBrightness.getValue()))
+                labelMultiplicativeBrightness.textProperty().setValue(String.valueOf( Math.floor(
+                        sliderMultiplicativeBrightness.getValue() * 100) / 100))
         );
 
         customThresholdSlider.valueProperty().addListener((observable, oldValue, newValue) ->
@@ -270,17 +271,17 @@ public class Controller implements Initializable {
     public void applyBrightness(ActionEvent event) {
         this.statusLabel.setText("Aplicando brilho!");
 
-        BufferedImage originalImage = this.getImage();
-
-        this.addToMemento(originalImage);
-
-        int additiveValue = Integer.parseInt(labelAditiveBrightness.getText());
-        int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
-
         try {
+            BufferedImage originalImage = this.getImage();
+
+            this.addToMemento(originalImage);
+
+            int additiveValue = (int)sliderAditiveBrightness.getValue();
+            double multiplicativeValue = sliderMultiplicativeBrightness.getValue();
+
             if (additiveValue != 0)
                 originalImage = new Additive().applyFilter(originalImage, additiveValue);
-            if (multiplicativeValue != 0)
+            if (multiplicativeValue != 0.0)
                 originalImage = new Multiplicative().applyFilter(originalImage, multiplicativeValue);
             if (originalImage != null) {
                 this.statusLabel.setText("Aplicando brilho!");
