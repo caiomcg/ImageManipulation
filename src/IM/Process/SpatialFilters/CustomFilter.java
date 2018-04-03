@@ -17,37 +17,35 @@ public class CustomFilter implements FilterAlgorithm {
             for (int x = 1; x < imgWidth - 1; x++) {
 
 
-                Color c00 = new Color(filter.getBufferedImage().getRGB(x - 1, y - 1));
-                Color c01 = new Color(filter.getBufferedImage().getRGB(x - 1, y));
-                Color c02 = new Color(filter.getBufferedImage().getRGB(x - 1, y + 1));
+                int c00 = filter.getBufferedImage().getRGB(x - 1, y - 1);
+                int c01 = filter.getBufferedImage().getRGB(x - 1, y);
+                int c02 = filter.getBufferedImage().getRGB(x - 1, y + 1);
 
-                Color c10 = new Color(filter.getBufferedImage().getRGB(x, y - 1));
-                Color c11 = new Color(filter.getBufferedImage().getRGB(x, y));
-                Color c12 = new Color(filter.getBufferedImage().getRGB(x, y + 1));
+                int c10 = filter.getBufferedImage().getRGB(x, y - 1);
+                int c11 = filter.getBufferedImage().getRGB(x, y);
+                int c12 = filter.getBufferedImage().getRGB(x, y + 1);
 
-                Color c20 = new Color(filter.getBufferedImage().getRGB(x + 1, y - 1));
-                Color c21 = new Color(filter.getBufferedImage().getRGB(x + 1, y));
-                Color c22 = new Color(filter.getBufferedImage().getRGB(x + 1, y + 1));
+                int c20 = filter.getBufferedImage().getRGB(x + 1, y - 1);
+                int c21 = filter.getBufferedImage().getRGB(x + 1, y);
+                int c22 = filter.getBufferedImage().getRGB(x + 1, y + 1);
 
-                int r = kernel[0][0]*c00.getRed() + kernel[0][1]*c01.getRed() + kernel[0][2]*c02.getRed() +
-                        kernel[1][0]*c10.getRed() + kernel[1][1]*c11.getRed() + kernel[1][2]*c12.getRed() +
-                        kernel[2][0]*c20.getRed() + kernel[2][1]*c21.getRed() + kernel[2][2]*c22.getRed();
+                int r = kernel[0][0] * (c00 >> 16 & 0xFF) + kernel[0][1] * (c01 >> 16 & 0xFF) + kernel[0][2] * (c02 >> 16 & 0xFF) +
+                        kernel[1][0] * (c10 >> 16 & 0xFF) + kernel[1][1] * (c11 >> 16 & 0xFF) + kernel[1][2] * (c12 >> 16 & 0xFF) +
+                        kernel[2][0] * (c20 >> 16 & 0xFF) + kernel[2][1] * (c21 >> 16 & 0xFF) + kernel[2][2] * (c22 >> 16 & 0xFF);
 
-                int g = kernel[0][0]*c00.getGreen() + kernel[0][1]*c01.getGreen() + kernel[0][2]*c02.getGreen() +
-                        kernel[1][0]*c10.getGreen() + kernel[1][1]*c11.getGreen() + kernel[1][2]*c12.getGreen() +
-                        kernel[2][0]*c20.getGreen() + kernel[2][1]*c21.getGreen() + kernel[2][2]*c22.getGreen();
+                int g = kernel[0][0] * (c00 >> 8 & 0xFF) + kernel[0][1] * (c01 >> 8 & 0xFF) + kernel[0][2] * (c02 >> 8 & 0xFF) +
+                        kernel[1][0] * (c10 >> 8 & 0xFF) + kernel[1][1] * (c11 >> 8 & 0xFF) + kernel[1][2] * (c12 >> 8 & 0xFF) +
+                        kernel[2][0] * (c20 >> 8 & 0xFF) + kernel[2][1] * (c21 >> 8 & 0xFF) + kernel[2][2] * (c22 >> 8 & 0xFF);
 
-                int b = kernel[0][0]*c00.getBlue() + kernel[0][1]*c01.getBlue() + kernel[0][2]*c02.getBlue() +
-                        kernel[1][0]*c10.getBlue() + kernel[1][1]*c11.getBlue() + kernel[1][2]*c12.getBlue() +
-                        kernel[2][0]*c20.getBlue() + kernel[2][1]*c21.getBlue() + kernel[2][2]*c22.getBlue();
+                int b = kernel[0][0] * (c00 & 0xFF) + kernel[0][1] * (c01 & 0xFF) + kernel[0][2] * (c02 & 0xFF) +
+                        kernel[1][0] * (c10 & 0xFF) + kernel[1][1] * (c11 & 0xFF) + kernel[1][2] * (c12 & 0xFF) +
+                        kernel[2][0] * (c20 & 0xFF) + kernel[2][1] * (c21 & 0xFF) + kernel[2][2] * (c22 & 0xFF);
 
                 r = Math.min(255, Math.max(0, r));
                 g = Math.min(255, Math.max(0, g));
                 b = Math.min(255, Math.max(0, b));
 
-                Color color = new Color(r, g, b);
-
-                filterResult.setRGB(x, y, color.getRGB());
+                filterResult.setRGB(x, y, (0xFF << 24) | (r << 16) | (g << 8) | b);
             }
         }
 
