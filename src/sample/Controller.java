@@ -229,8 +229,6 @@ public class Controller implements Initializable {
 
     @FXML
     public void applyBandSelection(ActionEvent event) {
-        this.statusLabel.setText("Applying band selection");
-
         int channels = 0x00000000;
 
         if (rCheckBox.isSelected()) {
@@ -242,13 +240,15 @@ public class Controller implements Initializable {
         if (bCheckBox.isSelected()) {
             channels |= 0xFF000000 | Integer.parseInt(bLabel.getText());
         }
-        if (channels == 0x00) {
-            channels = 0xFFFFFFFF;
+        if (!rCheckBox.isSelected() && !gCheckBox.isSelected() && !bCheckBox.isSelected()) {
+            return;
         }
+
         try {
             BufferedImage out = new BandSelector().applyFilter(this.getImage(), channels);
             this.addToMemento(this.getImage());
             this.setImage(out);
+            this.statusLabel.setText("Applying band selection");
         } catch (NullPointerException e) {
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
