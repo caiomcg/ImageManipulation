@@ -4,19 +4,13 @@ import java.awt.image.BufferedImage;
 
 public class Filter {
 
-    public static final int MEAN = 1;
-    public static final int MEDIAN = 2;
-    public static final int CUSTOM = 3;
-    public static final int SOBEL = 4;
-    public static final int LAPLACE = 5;
-
     private int filterSize;
     private int[][] kernel;
 
     private FilterAlgorithm filter;
     protected BufferedImage image;
 
-    public Filter(int filterType, int filterSize, BufferedImage image, int[][] kernel) {
+    public Filter(FilterType filterType, int filterSize, BufferedImage image, int[][] kernel) {
         this.filterSize = filterSize;
         this.image = image;
         this.kernel = kernel;

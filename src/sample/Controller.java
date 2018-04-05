@@ -11,6 +11,7 @@ import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Threshold;
 import IM.Process.Effects.Negative;
 import IM.Process.SpatialFilters.Filter;
+import IM.Process.SpatialFilters.FilterType;
 import IM.Process.SpatialFilters.MeanFilter;
 import IM.Utils;
 import com.sun.istack.internal.Nullable;
@@ -334,26 +335,24 @@ public class Controller implements Initializable {
         if (!meanFilterComboBox.getValue().equals(0)) {
             appliedFilters = 0x01;
             this.statusLabel.setText("Aplicando o filtro de Média");
-            originalImage = new Filter(Filter.MEAN, meanFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
+            originalImage = new Filter(FilterType.MEAN, meanFilterComboBox.getValue(), originalImage, null).applyFilter();
         }
 
         if (!medianFilterComboBox.getValue().equals(0)) {
             appliedFilters += 0x01 << 1;
             this.statusLabel.setText("Aplicando o filtro de Mediana");
-            originalImage = new Filter(Filter.MEDIAN, medianFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
+            originalImage = new Filter(FilterType.MEDIAN, medianFilterComboBox.getValue(), originalImage, null).applyFilter();
         }
 
         if (sobelFiterToggleButton.isSelected()) {
-            //TODO: Sobel filter
             appliedFilters += 0x01 << 2;
             this.statusLabel.setText("Aplicando o filtro de Sobel");
-            originalImage = new Filter(Filter.SOBEL, medianFilterComboBox.getValue(), originalImage, new int[1][1]).applyFilter();
+            originalImage = new Filter(FilterType.SOBEL, medianFilterComboBox.getValue(), originalImage, null).applyFilter();
         }
         if (laplaceFiterToggleButton.isSelected()) {
-            //TODO: Laplace filter
             appliedFilters += 0x01 << 3;
             this.statusLabel.setText("Aplicando o filtro Laplaciano");
-            originalImage = new Filter(Filter.LAPLACE, meanFilterComboBox.getValue(), originalImage, null).applyFilter();
+            originalImage = new Filter(FilterType.LAPLACE, meanFilterComboBox.getValue(), originalImage, null).applyFilter();
         }
 
         if (negativeFiterToggleButton.isSelected()) {
@@ -364,10 +363,9 @@ public class Controller implements Initializable {
         }
 
         if (customFiterToggleButton.isSelected()) {
-            //TODO: Apply custom filter
             appliedFilters += 0x01 << 5;
             this.statusLabel.setText("Aplicando filtro customizado");
-            originalImage = new Filter(Filter.CUSTOM, meanFilterComboBox.getValue(), originalImage, this.getKernelMatrix()).applyFilter();
+            originalImage = new Filter(FilterType.CUSTOM, meanFilterComboBox.getValue(), originalImage, this.getKernelMatrix()).applyFilter();
         }
 
         if (appliedFilters == 0x00) {

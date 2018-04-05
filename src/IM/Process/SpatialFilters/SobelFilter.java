@@ -1,6 +1,5 @@
 package IM.Process.SpatialFilters;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class SobelFilter implements FilterAlgorithm {
@@ -24,7 +23,6 @@ public class SobelFilter implements FilterAlgorithm {
                 int value01 = getGrayScale(image.getRGB(i - 1, j));
                 int value02 = getGrayScale(image.getRGB(i - 1, j + 1));
                 int value10 = getGrayScale(image.getRGB(i, j - 1));
-                int value11 = getGrayScale(image.getRGB(i, j));
                 int value12 = getGrayScale(image.getRGB(i, j + 1));
                 int value20 = getGrayScale(image.getRGB(i + 1, j - 1));
                 int value21 = getGrayScale(image.getRGB(i + 1, j));
@@ -35,7 +33,6 @@ public class SobelFilter implements FilterAlgorithm {
                         + ((-1 * value20) + (value22));
 
                 int gy =  ((-1 * value00) + (-2 * value01) + (-1 * value02))
-                        //+ (( 0 * value10) + ( 0 * value11) + ( 0 * value12))
                           + ((value20) + ( 2 * value21) + (value22));
 
                 int g = (int)Math.sqrt((gx * gx) + (gy * gy));

@@ -1,6 +1,5 @@
 package IM.Process.SpatialFilters;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class CustomFilter implements FilterAlgorithm {
