@@ -9,6 +9,7 @@ import IM.Process.Colors.Conversor;
 import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Threshold;
+import IM.Process.Convolution.Conv2D;
 import IM.Process.Effects.Negative;
 import IM.Process.SpatialFilters.Filter;
 import IM.Process.SpatialFilters.MeanFilter;
@@ -113,6 +114,8 @@ public class Controller implements Initializable {
     private ToggleButton negativeFiterToggleButton;
     @FXML
     private ToggleButton customFiterToggleButton;
+    @FXML
+    private ToggleButton convolutionFilterToggleButton;
     @FXML
     private ComboBox<Integer> meanFilterComboBox;
     @FXML
@@ -366,6 +369,12 @@ public class Controller implements Initializable {
             appliedFilters += 0x01 << 5;
             this.statusLabel.setText("Aplicando filtro customizado");
             originalImage = new Filter(Filter.CUSTOM, meanFilterComboBox.getValue(), originalImage, this.getKernelMatrix()).applyFilter();
+        }
+
+        if (convolutionFilterToggleButton.isSelected()) {
+            appliedFilters += 0x01 << 6;
+            this.statusLabel.setText("Aplicando filtro de convolução");
+            originalImage = new Conv2D(originalImage, this.getKernelMatrix()).applyConv();
         }
 
         if (appliedFilters == 0x00) {

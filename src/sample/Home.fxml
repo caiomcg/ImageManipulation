@@ -284,6 +284,7 @@
                               <Insets left="2.0" />
                            </GridPane.margin>
                         </TextField>
+                        <ToggleButton fx:id="convolutionFilterToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" styleClass="sidebar-toggle-button" text="Conv." textOverrun="CLIP" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                         <ToggleButton fx:id="customFiterToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" styleClass="sidebar-toggle-button" text="Custom" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                      <VBox.margin>
