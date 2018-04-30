@@ -10,6 +10,7 @@ import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Threshold;
 import IM.Process.Convolution.Conv2D;
+import IM.Process.Effects.Grayscale;
 import IM.Process.Effects.Negative;
 import IM.Process.SpatialFilters.Filter;
 import IM.Process.SpatialFilters.MeanFilter;
@@ -232,6 +233,20 @@ public class Controller implements Initializable {
     public void applyBandSelection(ActionEvent event) {
         this.statusLabel.setText("Applying band selection");
 
+        if (!rCheckBox.isSelected() && !gCheckBox.isSelected() && !bCheckBox.isSelected()) {
+            try {
+                System.err.println("Aplying grayscale");
+                BufferedImage out = new Grayscale().applyFilter(this.getImage(), null);
+                this.addToMemento(this.getImage());
+                this.setImage(out);
+            } catch (NullPointerException e) {
+                this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+                        " favor abra uma imagem\nutilizando o menu acima.");
+            }
+            return;
+        }
+
+        System.err.println("Other");
         int channels = 0x00000000;
 
         if (rCheckBox.isSelected()) {
@@ -244,6 +259,7 @@ public class Controller implements Initializable {
             channels |= 0xFF000000 | Integer.parseInt(bLabel.getText());
         }
         if (channels == 0x00) {
+
             channels = 0xFFFFFFFF;
         }
         try {
