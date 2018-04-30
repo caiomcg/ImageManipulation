@@ -390,7 +390,7 @@ public class Controller implements Initializable {
         if (convolutionFilterToggleButton.isSelected()) {
             appliedFilters += 0x01 << 6;
             this.statusLabel.setText("Aplicando filtro de convolução");
-            originalImage = new Conv2D(originalImage, this.getKernelMatrix()).applyConv();
+            originalImage = new Conv2D(originalImage, this.getKernelMatrixAsFloat()).applyConv();
         }
 
         if (appliedFilters == 0x00) {
@@ -431,6 +431,23 @@ public class Controller implements Initializable {
                 } catch (NumberFormatException e) {
                     textField.setText("0");
                     arr[i][j] = 0;
+                }
+            }
+        }
+        return arr;
+    }
+
+    private float[][] getKernelMatrixAsFloat() {
+        float[][] arr = new float[3][3];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                TextField textField = getNodeFromGridPane(i, j);
+                try {
+                    arr[i][j] = Float.parseFloat(textField.getText());
+                } catch (NumberFormatException e) {
+                    textField.setText("0");
+                    arr[i][j] = 0.0f;
                 }
             }
         }

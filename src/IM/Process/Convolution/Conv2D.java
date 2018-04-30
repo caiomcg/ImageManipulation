@@ -5,10 +5,10 @@ import java.awt.image.BufferedImage;
 
 public class Conv2D {
 
-    private int[][] mask;
+    private float[][] mask;
     private BufferedImage image;
 
-    public Conv2D(BufferedImage image, int[][] mask) {
+    public Conv2D(BufferedImage image, float[][] mask) {
         this.image = image;
         this.mask = new MatrixUtil().rotate180(mask);
     }
