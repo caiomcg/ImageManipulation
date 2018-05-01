@@ -236,7 +236,7 @@ public class Controller implements Initializable {
         if (!rCheckBox.isSelected() && !gCheckBox.isSelected() && !bCheckBox.isSelected()) {
             try {
                 System.err.println("Aplying grayscale");
-                BufferedImage out = new Grayscale().applyFilter(this.getImage(), null);
+                BufferedImage out = new Grayscale().applyFilter(this.getImage(), ((RadioButton)group.getSelectedToggle()).getText().equals(("YIQ")));
                 this.addToMemento(this.getImage());
                 this.setImage(out);
             } catch (NullPointerException e) {
