@@ -14,7 +14,7 @@ public class Grayscale extends Process {
 
         int p = (((pixel >> 24) & 0xFF) << 24) | (average << 16) | (average << 8) | average;
 
-        System.err.println(Integer.toBinaryString(p));
+        //System.err.println(Integer.toBinaryString(p));
 
         return p;
     }

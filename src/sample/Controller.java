@@ -6,23 +6,19 @@ import IM.Memento.CareTaker;
 import IM.Memento.Originator;
 import IM.Process.BandSelection.BandSelector;
 import IM.Process.Colors.Conversor;
-import IM.Process.Brightness.Additive;
-import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Threshold;
 import IM.Process.Convolution.Conv2D;
 import IM.Process.Effects.Grayscale;
 import IM.Process.Effects.Negative;
+import IM.Process.Histogram.Stretching;
+import IM.Process.Histogram.StretchingSettings;
 import IM.Process.SpatialFilters.Filter;
-import IM.Process.SpatialFilters.MeanFilter;
 import IM.Utils;
 import com.sun.istack.internal.Nullable;
-import com.sun.javafx.collections.ObservableListWrapper;
-import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -37,7 +33,6 @@ import javafx.stage.FileChooser;
 import javafx.util.converter.NumberStringConverter;
 
 import javax.imageio.ImageIO;
-import javax.xml.soap.Text;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -296,17 +291,22 @@ public class Controller implements Initializable {
         int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
 
         try {
-            if (additiveValue != 0)
-                modifiedImage = new Additive().applyFilter(originalImage, additiveValue);
-            if (multiplicativeValue != 0)
-                modifiedImage = new Multiplicative().applyFilter(modifiedImage, multiplicativeValue);
-            if (modifiedImage != null) {
-                this.statusLabel.setText("Aplicando brilho!");
-                this.addToMemento(originalImage);
-                this.setImage(modifiedImage);
-            } else {
-                this.statusLabel.setText("Falha ao aplicar brilho!");
-            }
+            StretchingSettings config = new Stretching().getStretchConfig(this.getImage());
+            System.err.println("Min: " + config.minR + " Max: " + config.maxR + " L: " + config.L);
+            BufferedImage out = new Stretching().applyFilter(this.getImage(), config);
+            this.addToMemento(this.getImage());
+            this.setImage(out);
+//            if (additiveValue != 0)
+//                modifiedImage = new Additive().applyFilter(originalImage, additiveValue);
+//            if (multiplicativeValue != 0)
+//                modifiedImage = new Multiplicative().applyFilter(modifiedImage, multiplicativeValue);
+//            if (modifiedImage != null) {
+//                this.statusLabel.setText("Aplicando brilho!");
+//                this.addToMemento(originalImage);
+//                this.setImage(modifiedImage);
+//            } else {
+//                this.statusLabel.setText("Falha ao aplicar brilho!");
+//            }
         } catch (NullPointerException e) {
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
