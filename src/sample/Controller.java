@@ -9,6 +9,8 @@ import IM.Process.Colors.Conversor;
 import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Threshold;
+import IM.Process.Convolution.Conv2D;
+import IM.Process.Effects.Grayscale;
 import IM.Process.Effects.Negative;
 import IM.Process.SpatialFilters.Filter;
 import IM.Process.SpatialFilters.FilterType;
@@ -114,6 +116,8 @@ public class Controller implements Initializable {
     private ToggleButton negativeFiterToggleButton;
     @FXML
     private ToggleButton customFiterToggleButton;
+    @FXML
+    private ToggleButton convolutionFilterToggleButton;
     @FXML
     private ComboBox<Integer> meanFilterComboBox;
     @FXML
@@ -229,6 +233,21 @@ public class Controller implements Initializable {
 
     @FXML
     public void applyBandSelection(ActionEvent event) {
+        this.statusLabel.setText("Applying band selection");
+
+        if (!rCheckBox.isSelected() && !gCheckBox.isSelected() && !bCheckBox.isSelected()) {
+            try {
+                System.err.println("Aplying grayscale");
+                BufferedImage out = new Grayscale().applyFilter(this.getImage(), ((RadioButton)group.getSelectedToggle()).getText().equals(("YIQ")));
+                this.addToMemento(this.getImage());
+                this.setImage(out);
+            } catch (NullPointerException e) {
+                this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+                        " favor abra uma imagem\nutilizando o menu acima.");
+            }
+            return;
+        }
+
         int channels = 0x00000000;
 
         if (rCheckBox.isSelected()) {
@@ -240,8 +259,9 @@ public class Controller implements Initializable {
         if (bCheckBox.isSelected()) {
             channels |= 0xFF000000 | Integer.parseInt(bLabel.getText());
         }
-        if (!rCheckBox.isSelected() && !gCheckBox.isSelected() && !bCheckBox.isSelected()) {
-            return;
+
+        if (channels == 0x00) {
+            channels = 0xFFFFFFFF;
         }
 
         try {
@@ -368,6 +388,12 @@ public class Controller implements Initializable {
             originalImage = new Filter(FilterType.CUSTOM, meanFilterComboBox.getValue(), originalImage, this.getKernelMatrix()).applyFilter();
         }
 
+        if (convolutionFilterToggleButton.isSelected()) {
+            appliedFilters += 0x01 << 6;
+            this.statusLabel.setText("Aplicando filtro de convolução");
+            originalImage = new Conv2D(originalImage, this.getKernelMatrixAsFloat()).applyConv();
+        }
+
         if (appliedFilters == 0x00) {
             this.statusLabel.setText("Os filtros não puderam ser aplicados");
             this.originator.restore(this.careTaker.getMemento());
@@ -406,6 +432,23 @@ public class Controller implements Initializable {
                 } catch (NumberFormatException e) {
                     textField.setText("0");
                     arr[i][j] = 0;
+                }
+            }
+        }
+        return arr;
+    }
+
+    private float[][] getKernelMatrixAsFloat() {
+        float[][] arr = new float[3][3];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                TextField textField = getNodeFromGridPane(i, j);
+                try {
+                    arr[i][j] = Float.parseFloat(textField.getText());
+                } catch (NumberFormatException e) {
+                    textField.setText("0");
+                    arr[i][j] = 0.0f;
                 }
             }
         }
