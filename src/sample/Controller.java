@@ -5,6 +5,8 @@ package sample;
 import IM.Memento.CareTaker;
 import IM.Memento.Originator;
 import IM.Process.BandSelection.BandSelector;
+import IM.Process.Brightness.Additive;
+import IM.Process.Brightness.Multiplicative;
 import IM.Process.Colors.Conversor;
 import IM.Process.Colors.Threshold;
 import IM.Process.Convolution.Conv2D;
@@ -233,7 +235,7 @@ public class Controller implements Initializable {
         if (!rCheckBox.isSelected() && !gCheckBox.isSelected() && !bCheckBox.isSelected()) {
             try {
                 System.err.println("Aplying grayscale");
-                BufferedImage out = new Grayscale().applyFilter(this.getImage(), null);
+                BufferedImage out = new Grayscale().applyFilter(this.getImage(), ((RadioButton)group.getSelectedToggle()).getText().equals(("YIQ")));
                 this.addToMemento(this.getImage());
                 this.setImage(out);
             } catch (NullPointerException e) {
@@ -294,33 +296,48 @@ public class Controller implements Initializable {
         int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
 
         try {
-            if (counter == 1) {
-                EqualizationSettings config = new EqualizationSettings(255, this.getImage());
-                BufferedImage out = new Equalization().applyFilter(this.getImage(), config);
-                this.addToMemento(this.getImage());
-                this.setImage(out);
-            } if (counter == 2) {
-                StretchingSettings strConfig = new Stretching().getStretchConfig(this.getImage());
-                BufferedImage out = new Stretching().applyFilter(this.getImage(), strConfig);
-                this.addToMemento(this.getImage());
-                this.setImage(out);
+            if (additiveValue != 0)
+                modifiedImage = new Additive().applyFilter(originalImage, additiveValue);
+            if (multiplicativeValue != 0)
+                modifiedImage = new Multiplicative().applyFilter(modifiedImage, multiplicativeValue);
+            if (modifiedImage != null) {
+                this.statusLabel.setText("Aplicando brilho!");
+                this.addToMemento(originalImage);
+                this.setImage(modifiedImage);
+            } else {
+                this.statusLabel.setText("Falha ao aplicar brilho!");
             }
-            System.out.println(counter);
-            counter++;
-//            if (additiveValue != 0)
-//                modifiedImage = new Additive().applyFilter(originalImage, additiveValue);
-//            if (multiplicativeValue != 0)
-//                modifiedImage = new Multiplicative().applyFilter(modifiedImage, multiplicativeValue);
-//            if (modifiedImage != null) {
-//                this.statusLabel.setText("Aplicando brilho!");
-//                this.addToMemento(originalImage);
-//                this.setImage(modifiedImage);
-//            } else {
-//                this.statusLabel.setText("Falha ao aplicar brilho!");
-//            }
         } catch (NullPointerException e) {
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
+        }
+    }
+
+    @FXML
+    private void onEqualize(ActionEvent event) {
+        this.statusLabel.setText("Equalizando...");
+        try {
+            EqualizationSettings config = new EqualizationSettings(255, this.getImage());
+            BufferedImage out = new Equalization().applyFilter(this.getImage(), config);
+            this.addToMemento(this.getImage());
+            this.setImage(out);
+        } catch (NullPointerException e) {
+            this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+                    " favor abra uma imagem\nutilizando o menu acima.");
+        }
+    }
+
+    @FXML
+    private void onExpand(ActionEvent event) {
+        this.statusLabel.setText("Expandindo...");
+        try {
+            StretchingSettings strConfig = new Stretching().getStretchConfig(this.getImage());
+            BufferedImage out = new Stretching().applyFilter(this.getImage(), strConfig);
+            this.addToMemento(this.getImage());
+            this.setImage(out);
+        } catch (NullPointerException e) {
+            this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+            " favor abra uma imagem\nutilizando o menu acima.");
         }
     }
 

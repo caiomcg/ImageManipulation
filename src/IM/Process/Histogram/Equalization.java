@@ -10,7 +10,6 @@ public class Equalization extends Process {
 
         int color = image.getRGB(pixelX, pixelY);
         int newColor = (config.vectorQuantitySum[((color>>16) & 0xff)] * config.L) / config.imageSize;
-        System.err.println("Color: " + ((color>>16) & 0xff) + " Sum: " + config.vectorQuantitySum[((color>>16) & 0xff)] + " newColor: " + newColor);
         int p = (((color >> 24) & 0xFF) << 24) | (newColor << 16) | (newColor << 8) | newColor;
 
         return p;
