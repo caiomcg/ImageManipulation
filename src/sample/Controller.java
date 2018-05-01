@@ -10,6 +10,8 @@ import IM.Process.Colors.Threshold;
 import IM.Process.Convolution.Conv2D;
 import IM.Process.Effects.Grayscale;
 import IM.Process.Effects.Negative;
+import IM.Process.Histogram.Equalization;
+import IM.Process.Histogram.EqualizationSettings;
 import IM.Process.Histogram.Stretching;
 import IM.Process.Histogram.StretchingSettings;
 import IM.Process.SpatialFilters.Filter;
@@ -279,6 +281,7 @@ public class Controller implements Initializable {
         }
     }
 
+    int counter = 1;
 
     @FXML
     public void applyBrightness(ActionEvent event) {
@@ -291,11 +294,19 @@ public class Controller implements Initializable {
         int multiplicativeValue = Integer.parseInt(labelMultiplicativeBrightness.getText());
 
         try {
-            StretchingSettings config = new Stretching().getStretchConfig(this.getImage());
-            System.err.println("Min: " + config.minR + " Max: " + config.maxR + " L: " + config.L);
-            BufferedImage out = new Stretching().applyFilter(this.getImage(), config);
-            this.addToMemento(this.getImage());
-            this.setImage(out);
+            if (counter == 1) {
+                EqualizationSettings config = new EqualizationSettings(255, this.getImage());
+                BufferedImage out = new Equalization().applyFilter(this.getImage(), config);
+                this.addToMemento(this.getImage());
+                this.setImage(out);
+            } if (counter == 2) {
+                StretchingSettings strConfig = new Stretching().getStretchConfig(this.getImage());
+                BufferedImage out = new Stretching().applyFilter(this.getImage(), strConfig);
+                this.addToMemento(this.getImage());
+                this.setImage(out);
+            }
+            System.out.println(counter);
+            counter++;
 //            if (additiveValue != 0)
 //                modifiedImage = new Additive().applyFilter(originalImage, additiveValue);
 //            if (multiplicativeValue != 0)

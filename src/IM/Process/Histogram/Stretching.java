@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 public class Stretching extends Process {
 
     @Override
-    protected int transform(BufferedImage image, int pixelX, int pixelY, Object obj) {
+    protected int transform (BufferedImage image, int pixelX, int pixelY, Object obj) {
         StretchingSettings config = (StretchingSettings) obj;
 
         int color = image.getRGB(pixelX, pixelY);
@@ -18,7 +18,7 @@ public class Stretching extends Process {
         return p;
     }
 
-    public StretchingSettings getStretchConfig(BufferedImage image) {
+    public StretchingSettings getStretchConfig (BufferedImage image) {
         int min = 999999999;
         int max = 0;
 
@@ -32,6 +32,6 @@ public class Stretching extends Process {
                 }
             }
         }
-        return new StretchingSettings(min, max, 255);
+        return new StretchingSettings (min, max, 255);
     }
 }
