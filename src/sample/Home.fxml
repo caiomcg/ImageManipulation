@@ -21,7 +21,7 @@
 
 <BorderPane onKeyReleased="#keyReleased" stylesheets="@Stylesheet/home.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <left>
-      <VBox alignment="CENTER" prefHeight="684.0" prefWidth="246.0" styleClass="background-vbox" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="900.0" prefWidth="246.0" styleClass="background-vbox" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="72.0">
                <children>
@@ -182,6 +182,26 @@
                   </HBox>
                </children>
             </VBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onEqualize" styleClass="sidebar-toggle-button" text="Equalização">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onExpand" styleClass="sidebar-toggle-button" text="Expansão">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
             <VBox alignment="CENTER">
                <children>
                   <Label text="Filtros" textFill="WHITE" />

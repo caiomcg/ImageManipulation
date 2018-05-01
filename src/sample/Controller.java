@@ -5,25 +5,26 @@ package sample;
 import IM.Memento.CareTaker;
 import IM.Memento.Originator;
 import IM.Process.BandSelection.BandSelector;
-import IM.Process.Colors.Conversor;
 import IM.Process.Brightness.Additive;
 import IM.Process.Brightness.Multiplicative;
+import IM.Process.Colors.Conversor;
 import IM.Process.Colors.Threshold;
 import IM.Process.Convolution.Conv2D;
 import IM.Process.Effects.Grayscale;
 import IM.Process.Effects.Negative;
+import IM.Process.Histogram.Equalization;
+import IM.Process.Histogram.EqualizationSettings;
+import IM.Process.Histogram.Stretching;
+import IM.Process.Histogram.StretchingSettings;
 import IM.Process.SpatialFilters.Filter;
 import IM.Process.SpatialFilters.FilterType;
 import IM.Process.SpatialFilters.MeanFilter;
 import IM.Utils;
 import com.sun.istack.internal.Nullable;
-import com.sun.javafx.collections.ObservableListWrapper;
-import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -38,7 +39,6 @@ import javafx.stage.FileChooser;
 import javafx.util.converter.NumberStringConverter;
 
 import javax.imageio.ImageIO;
-import javax.xml.soap.Text;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -287,6 +287,7 @@ public class Controller implements Initializable {
         }
     }
 
+    int counter = 1;
 
     @FXML
     public void applyBrightness(ActionEvent event) {
@@ -315,6 +316,34 @@ public class Controller implements Initializable {
             this.undo();
             this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
                     " favor abra uma imagem\nutilizando o menu acima.");
+        }
+    }
+
+    @FXML
+    private void onEqualize(ActionEvent event) {
+        this.statusLabel.setText("Equalizando...");
+        try {
+            EqualizationSettings config = new EqualizationSettings(255, this.getImage());
+            BufferedImage out = new Equalization().applyFilter(this.getImage(), config);
+            this.addToMemento(this.getImage());
+            this.setImage(out);
+        } catch (NullPointerException e) {
+            this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+                    " favor abra uma imagem\nutilizando o menu acima.");
+        }
+    }
+
+    @FXML
+    private void onExpand(ActionEvent event) {
+        this.statusLabel.setText("Expandindo...");
+        try {
+            StretchingSettings strConfig = new Stretching().getStretchConfig(this.getImage());
+            BufferedImage out = new Stretching().applyFilter(this.getImage(), strConfig);
+            this.addToMemento(this.getImage());
+            this.setImage(out);
+        } catch (NullPointerException e) {
+            this.presentBadImageAlert("Um erro ocorreu :(", "Nenhuma imagem encontrada,\npor" +
+            " favor abra uma imagem\nutilizando o menu acima.");
         }
     }
 
